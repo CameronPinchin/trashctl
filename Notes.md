@@ -2,12 +2,17 @@
 # Development Notes
 # 
 *These will be random notes for anything related to the development process and may not make sense when viewed.*
-**Cameron Pinchin<cwpinchin@outlook.com**
+**Author/Contact: Cameron Pinchin<cwpinchin@outlook.com>**
 
 ## 
 ## PLANNING
 ## 
 *Anything related to planning here*
+
+### 
+### Why safe-dd? 
+### 
+
 
 ## 
 ## TO-DOs

@@ -3,11 +3,11 @@ CC=gcc
 CFLAGS= -Wall
 CFLAGS_DEBUG= -Wall -Wextra -g
 
-TARGET=trashctl
-TARGET_DEBUG=trashctl-dbg
+TARGET=safe-dd
+TARGET_DEBUG=safe-dd-dbg
 
-SRC=trashctl.c
-OBJ=trashctl.o
+SRC=safe_dd.c
+OBJ=safe_dd.o
 
 all: $(TARGET)
 
