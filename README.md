@@ -5,7 +5,7 @@
 
 Inspired by a recent repository I saw (***safe-rm***) which recreated the trash-cli tool in C as a learning project. 
 
-## safe-dd (***sdd***) what does this do?
+### safe-dd (***sdd***) what does this do?
 
 I have often seen and heard a need for a more reassuring method of deploying the ***dd*** utility. **Safe-dd** intends to fill that need, prompting users with a familiar: 
     
@@ -13,7 +13,7 @@ I have often seen and heard a need for a more reassuring method of deploying the
 
 I wanted to add a verbosity operand and encourage users to utilize this feature by setting the default verbosity level to ***1*** of ***3***. 
 
-## safe-dd (***sdd***) what does this add?
+### safe-dd (***sdd***) what does this add?
 
 The main features I intended to add were:
 
