@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <pwd.h>
 #include <errno.h>
 #include <unistd.h>
@@ -81,9 +82,10 @@ static int env_info_populate(struct environment_info* env)
     return 0;
 }
 
-static int env_info_access_trash_dir(struct environment_info* env)
+static int trash_dir_access_check(struct environment_info* env)
 {
     int err;
+    errno = 0;
 
     if((err = access(env->trash_dir, F_OK)) == -1) {
         fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
@@ -91,6 +93,21 @@ static int env_info_access_trash_dir(struct environment_info* env)
     }
 
     printf("%s exists.\n", env->trash_dir);
+    return 0;
+}
+
+static int trash_dir_create_dir(struct environment_info* env)
+{
+    int err;
+    mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH; //644 (?)
+    errno = 0;
+
+    if((err = mkdir(env->trash_dir, dir_mode)) == -1) {
+        fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
+        return 1;
+    }
+
+    printf("%s has been successfully created.\n", env->trash_dir);
     return 0;
 }
 
@@ -120,9 +137,11 @@ int initialize(int argc, char** argv)
                 return EXIT_FAILURE;
             }
 
-            /* argument is valid, and doesn't require a third argument */
-            if((err = env_info_access_trash_dir(&env)) == 1) {
-                return EXIT_FAILURE;
+            /* if this function returns 1, we need to create the trash directory */
+            if((err = trash_dir_access_check(&env)) == 1) {
+                if((err = trash_dir_create_dir(&env)) == 1) {
+                    return EXIT_FAILURE;
+                }
             }
 
             return EXIT_SUCCESS;
