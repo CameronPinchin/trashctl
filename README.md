@@ -8,8 +8,7 @@ There is a Bash-based utility called trash-cli that provides a utility to manage
 
 Trashctl will check for the presence of a *Trash* directory located at the following location:
 
-
-> */home/${USER}/.local/share/Trash/files/*
+> ***/home/${USER}/.local/share/Trash/files/***
 
 If errno is set to [**ENOENT**] the directory and its necessary parent directories will be created, handled by function:
 
@@ -17,9 +16,9 @@ If errno is set to [**ENOENT**] the directory and its necessary parent directori
 
 If successful, the following environment variable will be set: 
 
-> *$TRASH_DIR = /home/${USER}/.local/share/Trash/files/*
+> ***$TRASH_DIR = /home/${USER}/.local/share/Trash/files/***
 
 The *files* directory will have its permission bits set to: **755**.
 
-### trashctl-* | -put,-list,-restore,-empty,-pick
+
 
