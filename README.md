@@ -1,5 +1,5 @@
 
-# safe-dd (***sdd***)
+# **trashctl**
 **Author: Cameron Pinchin | <cwpinchin@outlook.com>**
 
 ### trashctl | description
