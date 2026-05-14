@@ -141,7 +141,7 @@ int initialize(int argc, char** argv)
             }
             /* if this function returns 1, we need to create the trash directory */
             if((err = trash_dir_access_check(&env)) == 1) {
-                if((err = trash_dir_create_dir(&env)) == 1) {
+                if((err = trash_dir_create_dir_p(&env)) == 1) {
                     return EXIT_FAILURE;
                 }
             }
