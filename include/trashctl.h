@@ -4,8 +4,8 @@
 #define TRASHCTL_H
 
 /* MACROS */
-#define TRASHCTL_TRASH_DIR      "/.local/share/Trash/files/"
-#define TRASHCTL_TRASH_DIR_LEN  ((size_t)27)
+#define TRASHCTL_TRASH_DIR      "/.local/share/Trash/files"
+#define TRASHCTL_TRASH_DIR_LEN  ((size_t)26)
 
 /* ARGUMENT: MACROS */
 #define TRASHCTL_ARG_CNT_ONE    1

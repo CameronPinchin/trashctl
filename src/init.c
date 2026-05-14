@@ -88,7 +88,7 @@ static int trash_dir_access_check(struct environment_info* env)
     errno = 0;
 
     if((err = access(env->trash_dir, F_OK)) == -1) {
-        fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
+        fprintf(stderr, "[ERROR]: %s (must create trash_dir)\n", strerror(errno));
         return 1;
     }
 
@@ -96,6 +96,9 @@ static int trash_dir_access_check(struct environment_info* env)
     return 0;
 }
 
+/* this fails currently because its parent directories do not exist, need to make a recursive version
+ *  - good function for a personal library aswell
+ */
 static int trash_dir_create_dir(struct environment_info* env)
 {
     int err;
@@ -132,11 +135,10 @@ int initialize(int argc, char** argv)
             if((err = init_standalone_arg_check(argv[1])) == 1) {
                 return EXIT_FAILURE;
             }
-            /* argument is valid, and doesn't require a third argument */
+
             if((err = env_info_populate(&env)) == 1) {
                 return EXIT_FAILURE;
             }
-
             /* if this function returns 1, we need to create the trash directory */
             if((err = trash_dir_access_check(&env)) == 1) {
                 if((err = trash_dir_create_dir(&env)) == 1) {
