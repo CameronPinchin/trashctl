@@ -2,8 +2,6 @@
 # **trashctl**
 **Author: Cameron Pinchin | <cwpinchin@outlook.com>**
 
-## trashctl | Description
-
 There is a Bash-based utility called trash-cli that provides a utility to manage your *trashbin* on Linux systems. This aims to emulate that functionality, written in C. There are other C-based versions of this, so this is more of a learning project.
 
 ### trashctl | Introduction
