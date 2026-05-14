@@ -6,19 +6,19 @@ There is a Bash-based utility called trash-cli that provides a utility to manage
 
 ### trashctl | Introduction
 
-Trashctl will check for the presence of a *Trash* directory located at the following location:
+Trashctl shall check for the presence of a *Trash* directory located at the following location:
 
 > ***/home/${USER}/.local/share/Trash/files/***
 
-If errno is set to [**ENOENT**], then the directory and its necessary parent directories will be created, handled by function:
+If errno is set to [**ENOENT**], then the directory and its necessary parent directories shall be created, handled by function:
 
 > static int trash_dir_create_dir_p(struct environment_info* env);
 
-If successful, the following environment variable will be set: 
+If successful, the following environment variable shall be set: 
 
 > ***$TRASH_DIR = /home/${USER}/.local/share/Trash/files/***
 
-The ${TRASH_DIR} will have its permission bits set to **755** and will be the location for trashed files.
+The ${TRASH_DIR} shall have its permission bits set to **755** and shall be the location for trashed files.
 
 
 
