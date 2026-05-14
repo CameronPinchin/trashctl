@@ -1,23 +1,14 @@
 
 # safe-dd (***sdd***)
-
 **Author: Cameron Pinchin | <cwpinchin@outlook.com>**
 
-Inspired by a recent repository I saw (***safe-rm***) which recreated the trash-cli tool in C as a learning project. 
+### trashctl | description
 
-### safe-dd (***sdd***) what does this do?
+There is a Bash-based utility called trash-cli that provides a utility to manage your *trashbin* on Linux systems. This aims to emulate that functionality, written in C. There are other C-based versions of this, so this is more of a learning project.
 
-I have often seen and heard a need for a more reassuring method of deploying the ***dd*** utility. **Safe-dd** intends to fill that need, prompting users with a familiar: 
-    
-> *Do you wish to proceed[y/N]?*
+### trashctl | what does this add?
 
-I wanted to add a verbosity operand and encourage users to utilize this feature by setting the default verbosity level to ***1*** of ***3***. 
+This adds a *tashbin* location if ran in a headless environment, or the environment lacks a *trashbin* feature native to the distrobution. 
 
-### safe-dd (***sdd***) what does this add?
+### trashctl-* | -put,-list,-restore,-empty,-pick
 
-The main features I intended to add were:
-
-1. The blocking prompt "(y/N)" encouraging users to re-read their input.
-2. The verbosity levels to encourage users to double-check their ***if*** and ***of***.
-
-***This section may expand in the future.***
