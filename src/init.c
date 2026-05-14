@@ -99,10 +99,10 @@ static int trash_dir_access_check(struct environment_info* env)
 /* this fails currently because its parent directories do not exist, need to make a recursive version
  *  - good function for a personal library aswell
  */
-static int trash_dir_create_dir(struct environment_info* env)
+static int trash_dir_create_dir_p(struct environment_info* env)
 {
     int err;
-    mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH; //644 (?)
+    mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH; //755
     errno = 0;
 
     if((err = mkdir(env->trash_dir, dir_mode)) == -1) {
