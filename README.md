@@ -18,7 +18,7 @@ If successful, the following environment variable will be set:
 
 > ***$TRASH_DIR = /home/${USER}/.local/share/Trash/files/***
 
-The *files* directory will have its permission bits set to: **755**.
+The ${TRASH_DIR} will have its permission bits set to **755** and will be the location for trashed files.
 
 
 
