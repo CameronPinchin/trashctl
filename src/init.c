@@ -127,6 +127,9 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
     char current_directory[256]; // need a clean buffer for copying
     char working_directory[256]; // need a clean buffer for copying
     
+    memset(current_directory, 0, sizeof(current_directory));
+    memset(working_directory, 0, sizeof(current_directory));
+
     size_t current_path_len = strlen(env->home_dir);
 
     if((err = snprintf(current_directory, current_path_len, "%s%s", working_directory, env->home_dir)) == -1) {
@@ -137,7 +140,7 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
 
         current_path_len += strlen(parent_directories[i]); // use this val
 
-        if((err = snprintf(current_directory, current_path_len, "%s%s", current_dir_ptr, parent_directories[i])) == -1) {
+        if((err = snprintf(current_directory, current_path_len, "%s%s", working_directory, parent_directories[i])) == -1) {
             fprintf(stderr, "k2[ERROR]: %s\n", strerror(errno));
             return 1;
         }
