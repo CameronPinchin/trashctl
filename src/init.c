@@ -142,36 +142,22 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
 {
     int err, i;
     mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-    char current_directory[256]; // need a clean buffer for copying
-    char working_directory[256]; // need a clean buffer for copying
+    char working_directory[256] = env->home_dir;
     
-    memset(current_directory, 0, sizeof(current_directory));
     memset(working_directory, 0, sizeof(current_directory));
 
-    size_t current_path_len = strlen(env->home_dir);
-
-    if((err = snprintf(current_directory, current_path_len, "%s%s", working_directory, env->home_dir)) == -1) {
-        fprintf(stderr, "k1[ERROR]: %s\n", strerror(errno));
-    }
+    size_t capacity = sizeof(working_directory);
+    size_t offset = strlen(env->home_dir);
+    size_t remaining = capacity;
 
     for(i = 0; i < 4; ++i) {
-
-        current_path_len += strlen(parent_directories[i]); // use this val
-
-        if((err = snprintf(current_directory, current_path_len, "%s", parent_directories[i])) == -1) {
-            fprintf(stderr, "k2[ERROR]: %s\n", strerror(errno));
+        remaining = capacity - offset;
+        if(err = snprintf(working_directory + offset, remaining, "/%s", parent_directories[i]) == -1){
+            fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
             return 1;
         }
-
-        fprintf(stderr, "[recursive mkdir test] current_directory buffer: %s\n", current_directory);
-        fprintf(stderr, "[recursive mkdir test] working_directory buffer: %s\n", working_directory); // empty
-        if((err = mkdir(current_directory, dir_mode)) == -1) {
-            fprintf(stderr, "k3[ERROR]: %s\n", strerror(errno));
-            err = 0;
-            continue; 
-        }
     }
-
+    fprintf(stderrm "[success]: %s\n", working_directory);
     return 0;
 }
 
