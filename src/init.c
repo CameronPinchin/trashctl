@@ -158,13 +158,13 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
 
         current_path_len += strlen(parent_directories[i]); // use this val
 
-        if((err = snprintf(current_directory, current_path_len, "%s%s", working_directory, parent_directories[i])) == -1) {
+        if((err = snprintf(current_directory, current_path_len, "%s", parent_directories[i])) == -1) {
             fprintf(stderr, "k2[ERROR]: %s\n", strerror(errno));
             return 1;
         }
 
         fprintf(stderr, "[recursive mkdir test] current_directory buffer: %s\n", current_directory);
-        fprintf(stderr, "[recursive mkdir test] current_directory buffer: %s\n", working_directory);
+        fprintf(stderr, "[recursive mkdir test] working_directory buffer: %s\n", working_directory); // empty
         if((err = mkdir(current_directory, dir_mode)) == -1) {
             fprintf(stderr, "k3[ERROR]: %s\n", strerror(errno));
             err = 0;
