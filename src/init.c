@@ -145,6 +145,7 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
             return 1;
         }
 
+        fprintf(stderr, "[recursive mkdir test] current_directory buffer: %s\n", current_directory);
         if((err = mkdir(current_directory, dir_mode)) == -1) {
             fprintf(stderr, "(parent dir likely doesnt exist)[ERROR]: %s\n", strerror(errno));
             err = 0;
