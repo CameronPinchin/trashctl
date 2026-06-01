@@ -16,6 +16,10 @@ static const char* standalone_arguments[] = {TRASHCTL_ARG_LIST, TRASHCTL_ARG_PUT
     TRASHCTL_ARG_EMPTY
 };
 
+static const char* parent_directories[] = {TRASHCTL_PARENT_DIR_LOCAL, TRASHCTL_PARENT_DIR_SHARE, \
+    TRASHCTL_PARENT_DIR_TRASH, TRASHCTL_PARENT_DIR_FILES
+};
+
 static void help_message()
 {
     fputs("traschtl [put, list, restore, empty, delete] [file]\n", stdout);
@@ -114,6 +118,40 @@ static int trash_dir_create_dir_p(struct environment_info* env)
     return 0;
 }
 
+// recursive ver in charge of creating parent dirs 
+// TO-DO: Review and make test cases for this function
+static int trash_dir_create_dir_p_(struct environment_info* env)
+{
+    int err, i;
+    mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+    char current_directory[256]; // need a clean buffer for copying
+    char working_directory[256]; // need a clean buffer for copying
+    
+    size_t current_path_len = strlen(env->home_dir);
+
+    if((err = snprintf(current_directory, current_path_len, "%s%s", working_directory, env->home_dir)) == -1) {
+        fprintf(stderr, "k1[ERROR]: %s\n", strerror(errno));
+    }
+
+    for(i = 0; i < 4; ++i) {
+
+        current_path_len += strlen(parent_directories[i]); // use this val
+
+        if((err = snprintf(current_directory, current_path_len, "%s%s", current_dir_ptr, parent_directories[i])) == -1) {
+            fprintf(stderr, "k2[ERROR]: %s\n", strerror(errno));
+            return 1;
+        }
+
+        if((err = mkdir(current_directory, dir_mode)) == -1) {
+            fprintf(stderr, "(parent dir likely doesnt exist)[ERROR]: %s\n", strerror(errno));
+            err = 0;
+            continue; 
+        }
+    }
+
+    return 0;
+}
+
 /* TO-DO: Need to do an environment check. I.e., do they have a trashbin directory? */
 int initialize(int argc, char** argv)
 {
@@ -141,7 +179,7 @@ int initialize(int argc, char** argv)
             }
             /* if this function returns 1, we need to create the trash directory */
             if((err = trash_dir_access_check(&env)) == 1) {
-                if((err = trash_dir_create_dir_p(&env)) == 1) {
+                if((err = trash_dir_create_dir_p_(&env)) == 1) {
                     return EXIT_FAILURE;
                 }
             }

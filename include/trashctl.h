@@ -13,7 +13,6 @@
 #define TRASHCTL_PARENT_DIR_TRASH   "/Trash"
 #define TRASHCTL_PARENT_DIR_FILES   "/files"
 
-
 /* ARGUMENT: MACROS */
 #define TRASHCTL_ARG_CNT_ONE        1
 #define TRASHCTL_ARG_CNT_TWO        2
@@ -32,7 +31,7 @@ int initialize(int argc, char** argv);
 
 /* STRUCT DEFINITIONS */
 struct environment_info {
-const char* uname;                    /* Identifier for the username                        */
+    const char* uname;                /* Identifier for the username                        */
     const char* home_dir;             /* Identifier for the home directory of the user      */
     const char* trash_dir;            /* Identifier for the trash directory of the user     */
     char trash_dir_mut[256];          /* For the concatenation of home_dir and trash_dir    */
