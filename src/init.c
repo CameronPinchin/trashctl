@@ -142,9 +142,9 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
 {
     int err, i;
     mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-    char working_directory[256] = env->home_dir;
+    char working_directory[256] = "/home/cameron"; /* opts: env->home_dir (fix), /home/cameron*/
     
-    memset(working_directory, 0, sizeof(current_directory));
+    memset(working_directory, 0, sizeof(working_directory));
 
     size_t capacity = sizeof(working_directory);
     size_t offset = strlen(env->home_dir);
@@ -157,7 +157,7 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
             return 1;
         }
     }
-    fprintf(stderrm "[success]: %s\n", working_directory);
+    fprintf(stderr, "[success]: %s\n", working_directory);
     return 0;
 }
 
