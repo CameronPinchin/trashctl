@@ -156,6 +156,7 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
             fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
             return 1;
         }
+        offset += err;
     }
     fprintf(stderr, "[success]: %s\n", working_directory);
     return 0;
