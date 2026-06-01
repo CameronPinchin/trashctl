@@ -120,6 +120,24 @@ static int trash_dir_create_dir_p(struct environment_info* env)
 
 // recursive ver in charge of creating parent dirs 
 // TO-DO: Review and make test cases for this function
+/*
+ * Currently, this function is incorrectly building the path for the trashbin.
+ *  For ex:
+ *      - expected: /home/$USER/.local/share/Trash/files
+ *      - actual: /home
+ *                /$USER
+ *                /.local
+ *                /share
+ *                /Trash
+ *                /files
+ *
+ * Such that the buffer clears itself through each iteration of the loop.
+ *
+ *  This is attributable to working_directory. I never actual build working_directory but rely on it for path construction.
+ *   - Just need to additional be building working_directory at the same time.
+ *   - The reason I have two is for temporary storage as you cannot
+ **/
+
 static int trash_dir_create_dir_p_(struct environment_info* env)
 {
     int err, i;
@@ -146,8 +164,9 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
         }
 
         fprintf(stderr, "[recursive mkdir test] current_directory buffer: %s\n", current_directory);
+        fprintf(stderr, "[recursive mkdir test] current_directory buffer: %s\n", working_directory);
         if((err = mkdir(current_directory, dir_mode)) == -1) {
-            fprintf(stderr, "(parent dir likely doesnt exist)[ERROR]: %s\n", strerror(errno));
+            fprintf(stderr, "k3[ERROR]: %s\n", strerror(errno));
             err = 0;
             continue; 
         }
