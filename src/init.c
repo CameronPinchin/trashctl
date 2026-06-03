@@ -117,32 +117,14 @@ static int trash_dir_create_dir_p(struct environment_info* env)
     printf("%s has been successfully created.\n", env->trash_dir);
     return 0;
 }
-
-// recursive ver in charge of creating parent dirs 
-// TO-DO: Review and make test cases for this function
-/*
- * Currently, this function is incorrectly building the path for the trashbin.
- *  For ex:
- *      - expected: /home/$USER/.local/share/Trash/files
- *      - actual: /home
- *                /$USER
- *                /.local
- *                /share
- *                /Trash
- *                /files
- *
- * Such that the buffer clears itself through each iteration of the loop.
- *
- *  This is attributable to working_directory. I never actual build working_directory but rely on it for path construction.
- *   - Just need to additional be building working_directory at the same time.
- *   - The reason I have two is for temporary storage as you cannot
- **/
-
+/* this still needs work, as it only uses the static /home/cameron option at the moment.
+ *  - Path construction works though, and the directories do get created.
+ */
 static int trash_dir_create_dir_p_(struct environment_info* env)
 {
     int err, i;
     mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-    char working_directory[256] = "/home/cameron"; /* opts: env->home_dir (fix), /home/cameron*/
+    char working_directory[256] = "/home/cameron"; /* opts: env->home_dir (fix), /home/cameron */
     
     size_t capacity = sizeof(working_directory);
     size_t offset = strlen(working_directory);
@@ -152,21 +134,18 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
         fprintf(stderr, "[%d] c: %ld o: %ld\n", i, capacity, offset);
         remaining = capacity - offset;
 
-        if((err = snprintf(working_directory + offset, remaining, "/%s", parent_directories[i])) == -1){
+        if((written = snprintf(working_directory + offset, remaining, "/%s", parent_directories[i])) == -1){
             fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
             return 1;
         }
-        fprintf(stderr, "[characters written] %d\n", err);
-        offset += err;
+        offset += written;
 
         const char *path = working_directory;
         if((err = mkdir(path, dir_mode)) == -1){
             fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
             continue;
         }
-        fprintf(stderr, "[mkdir status] %d\n", err);
     }
-    fprintf(stderr, "[success]: %s\n", working_directory);
     return 0;
 }
 
