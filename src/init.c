@@ -162,7 +162,7 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
         const char *path = working_directory;
         if((err = mkdir(path, dir_mode)) == -1){
             fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
-            return 1;
+            continue;
         }
         fprintf(stderr, "[mkdir status] %d\n", err);
     }
