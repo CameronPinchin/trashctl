@@ -156,13 +156,15 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
             fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
             return 1;
         }
+        fprintf(stderr, "[characters written] %d\n", err);
+        offset += err;
+
         const char *path = working_directory;
         if((err = mkdir(path, dir_mode)) == -1){
             fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
             return 1;
         }
-        fprintf(stderr, "[characters written] %d\n", err);
-        offset += err;
+        fprintf(stderr, "[mkdir status] %d\n", err);
     }
     fprintf(stderr, "[success]: %s\n", working_directory);
     return 0;
