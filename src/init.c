@@ -151,7 +151,13 @@ static int trash_dir_create_dir_p_(struct environment_info* env)
     for(i = 0; i < 4; ++i) {
         fprintf(stderr, "[%d] c: %ld o: %ld\n", i, capacity, offset);
         remaining = capacity - offset;
+
         if((err = snprintf(working_directory + offset, remaining, "/%s", parent_directories[i])) == -1){
+            fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
+            return 1;
+        }
+        const char *path = working_directory;
+        if((err = mkdir(path, dir_mode)) == -1){
             fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
             return 1;
         }
