@@ -27,12 +27,15 @@ static int trashctl_list_operation(struct environment_info *env)
         return 1;
     }
 
+    char *usr_trash_dir = strdup(env->trash_dir);
+    fprintf(stderr, "[DBG] usr_trash_dir: %s\n[DBG] env->trash_dir: %s\n", usr_trash_dir, env->trash_dir);
 
     char *const argv[] = {"ls", "-l", NULL};
-    char *const envp[] = {"USER=root", env->trash_dir, NULL};
+    char *const envp[] = {"USER=root", usr_trash_dir, NULL};
 
     execve(TRASHCTL_LS_PATH, argv, envp);
 
+    fprintf(stderr, "[DBG] pid_ls: %d\n", pid_ls);
 
     if((err = waitpid(pid_ls, &status, 0)) == -1){
         fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
