@@ -52,6 +52,8 @@ int trashctl_list(struct environment_info* env)
     int err;
     errno = 0;
 
+    fprintf(stderr, "[DBG] trashctl, env->trash_dir: %s\n", env->trash_dir);
+
     if((err = trash_dir_access_check(env)) == 1){
         fputs("[ERROR]: trashctl was unable to find your trash directory.\n", stderr);
         return 1;
