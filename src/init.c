@@ -1,12 +1,4 @@
 #include "../include/trashctl.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <pwd.h>
-#include <errno.h>
-#include <unistd.h>
 
 static const char* valid_arguments[] = {TRASHCTL_ARG_PUT, TRASHCTL_ARG_LIST, \
     TRASHCTL_ARG_RESTORE, TRASHCTL_ARG_EMPTY, TRASHCTL_ARG_DELETE
@@ -100,27 +92,11 @@ static int trash_dir_access_check(struct environment_info* env)
     return 0;
 }
 
-/* this fails currently because its parent directories do not exist, need to make a recursive version
- *  - good function for a personal library aswell
- */
-static int trash_dir_create_dir_p(struct environment_info* env)
-{
-    int err;
-    mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH; //755
-    errno = 0;
 
-    if((err = mkdir(env->trash_dir, dir_mode)) == -1) {
-        fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
-        return 1;
-    }
-
-    printf("%s has been successfully created.\n", env->trash_dir);
-    return 0;
-}
 /* this still needs work, as it only uses the static /home/cameron option at the moment.
  *  - Path construction works though, and the directories do get created.
  */
-static int trash_dir_create_dir_p_(struct environment_info* env)
+static int trash_dir_create_dir_p(struct environment_info* env)
 {
     int err, i;
     mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
@@ -155,6 +131,12 @@ int initialize(int argc, char** argv)
     int err;
     struct environment_info env;
 
+    if((err = trash_dir_access_check(&env)) == 1) {
+        if((err = trash_dir_create_dir_p(&env)) == 1) {
+            return EXIT_FAILURE;
+        }
+    }
+
     switch(argc){
         case TRASHCTL_ARG_CNT_ONE:
 
@@ -174,12 +156,9 @@ int initialize(int argc, char** argv)
             if((err = env_info_populate(&env)) == 1) {
                 return EXIT_FAILURE;
             }
-            /* if this function returns 1, we need to create the trash directory */
-            if((err = trash_dir_access_check(&env)) == 1) {
-                if((err = trash_dir_create_dir_p_(&env)) == 1) {
-                    return EXIT_FAILURE;
-                }
-            }
+
+            /* test trashctl list */
+            trashctl_list(&env);
 
             return EXIT_SUCCESS;
         case TRASHCTL_ARG_CNT_THREE:

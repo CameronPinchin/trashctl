@@ -1,7 +1,19 @@
 #include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <pwd.h>
+#include <errno.h>
+#include <unistd.h>
 
 #ifndef TRASHCTL_H
 #define TRASHCTL_H
+
+/* TEST: MACROS*/
+#define TRASHCTL_LS_PATH            "/bin/ls"
 
 /* INIT: DIRECTORY MACROS */
 #define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files"
@@ -26,9 +38,6 @@
 #define TRASHCTL_ARG_EMPTY          "empty"
 #define TRASHCTL_ARG_DELETE         "delete"
 
-/* FORWARD DECLARATIONS */
-int initialize(int argc, char** argv);
-
 /* STRUCT DEFINITIONS */
 struct environment_info {
     const char* uname;                /* Identifier for the username                        */
@@ -37,5 +46,10 @@ struct environment_info {
     char trash_dir_mut[256];          /* For the concatenation of home_dir and trash_dir    */
     size_t trash_dir_len;             /* To store the length of the pathname for trash_dir  */
 };
+
+/* FORWARD DECLARATIONS */
+int initialize(int argc, char** argv);
+int trashctl_list(struct environment_info* env);
+
 
 #endif
