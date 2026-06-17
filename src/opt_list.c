@@ -37,12 +37,10 @@ static int trashctl_list_operation(struct environment_info *env)
     //     return 1;
     // }
 
-    char *const argv[] = {"ls", "-l", NULL};
+    char *const argv[] = {"ls", "-l", usr_trash_dir, NULL};
     char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
     execve(TRASHCTL_LS_PATH, argv, envp);
-
-    fprintf(stderr, "[DBG] pid_ls: %d\n", pid_ls);
 
     } else {
 
