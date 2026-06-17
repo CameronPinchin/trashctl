@@ -29,7 +29,7 @@ static int trashctl_list_operation(struct environment_info *env)
 
     char *usr_trash_dir = strdup(env->trash_dir);
     size_t usr_uname_length = strlen(usr_trash_dir);
-    char usr_uname_temp[256] = "USER=";
+    char usr_uname_temp[64] = "USER=";
     char *usr_uname = strncat(usr_uname_temp, env->uname, usr_uname_length);
 
     // if((err = strncat(usr_uname_temp, env->uname, usr_uname_length)) != 0) {
@@ -40,7 +40,7 @@ static int trashctl_list_operation(struct environment_info *env)
     fprintf(stderr, "[DBG] usr_trash_dir: %s\n[DBG] env->trash_dir: %s\n[DBG] usr_uname: %s\n", usr_trash_dir, env->trash_dir, usr_uname);
 
     char *const argv[] = {"ls", "-l", NULL};
-    char *const envp[] = {env->uname, usr_trash_dir, NULL};
+    char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
     execve(TRASHCTL_LS_PATH, argv, envp);
 
