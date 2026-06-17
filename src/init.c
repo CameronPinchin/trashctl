@@ -78,22 +78,12 @@ static int env_info_populate(struct environment_info* env)
     return 0;
 }
 
-static int trash_dir_path_creation(struct environment_info* env)
-{
-    char usr_uname_temp[64];
-    strcpy(usr_uname_temp, env->uname);
-    strcat(usr_uname_temp, TRASHCTL_TRASH_DIR); // free this
-    env->trash_dir = strdup(usr_uname_temp);
-    printf("[DBG] env->trash_dir (pathcreate): %s\n", env->trash_dir);
-    return 0;
-}
-
 /* the reason this always failes is due to env->trash_dir always being uninitalized at the time this function is called*/
 static int trash_dir_access_check(struct environment_info* env)
 {
     int err;
     errno = 0;
-    printf("[DBG] trash_dir path, in access_check: %s\n", env->trash_dir);
+
     if((err = access(env->trash_dir, F_OK)) == -1) {
         fprintf(stderr, "[ERROR]: %s (must create trash_dir)\n", strerror(errno));
         return 1;

@@ -27,15 +27,13 @@ static int trashctl_list_operation(struct environment_info *env)
         return 1;
     } else if (pid_ls == 0){
 
+    /* TO-DO
+     * - clean up this function (namely local variable initializations)
+     */
     char *usr_trash_dir = strdup(env->trash_dir);
     size_t usr_uname_length = strlen(usr_trash_dir);
     char usr_uname_temp[64] = "USER=";
-    char *usr_uname = strncat(usr_uname_temp, env->uname, usr_uname_length);
-
-    // if((err = strncat(usr_uname_temp, env->uname, usr_uname_length)) != 0) {
-    //     fputs("[ERROR] strncat error, failed to concatenate username prefix with username.\n");
-    //     return 1;
-    // }
+    char *usr_uname = strncat(usr_uname_temp, env->uname, usr_uname_length); // this is malloc'd, must be free()'d
 
     char *const argv[] = {"ls", "-l", usr_trash_dir, NULL};
     char *const envp[] = {usr_uname, usr_trash_dir, NULL};
@@ -49,7 +47,6 @@ static int trashctl_list_operation(struct environment_info *env)
             return 1;
         }
 
-        fprintf(stderr, "Parent: child process has terminated.\n");
         return 0;
     }
 
@@ -61,8 +58,6 @@ int trashctl_list(struct environment_info* env)
     /* check for */
     int err;
     errno = 0;
-
-    fprintf(stderr, "[DBG] trashctl, env->trash_dir: %s\n", env->trash_dir);
 
     if((err = trash_dir_access_check(env)) == 1){
         fputs("[ERROR]: trashctl was unable to find your trash directory.\n", stderr);
