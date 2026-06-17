@@ -82,13 +82,12 @@ static int trash_dir_access_check(struct environment_info* env)
 {
     int err;
     errno = 0;
-
+    fprintf("[DBG] trash_dir path, in access_check: %s\n", env->trash_dir);
     if((err = access(env->trash_dir, F_OK)) == -1) {
         fprintf(stderr, "[ERROR]: %s (must create trash_dir)\n", strerror(errno));
         return 1;
     }
 
-    printf("%s exists.\n", env->trash_dir);
     return 0;
 }
 
