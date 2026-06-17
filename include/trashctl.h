@@ -15,6 +15,7 @@
 /* TEST: MACROS*/
 #define TRASHCTL_LS_PATH            "/bin/ls"
 #define TRASHCTL_RM_PATH            "/bin/rm"
+#define TRASHCTL_FIND_PATH          "/bin/find"
 
 /* INIT: DIRECTORY MACROS */
 #define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files/"
