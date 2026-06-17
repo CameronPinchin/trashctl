@@ -18,13 +18,13 @@
 
 /* INIT: DIRECTORY MACROS */
 #define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files/"
-#define TRASHCTL_TRASH_DIR_LEN      ((size_t)26)
+#define TRASHCTL_TRASH_DIR_LEN      ((size_t)27)
 
 /* INIT: PARENT DIRECTORIES */
 #define TRASHCTL_PARENT_DIR_LOCAL   ".local"
 #define TRASHCTL_PARENT_DIR_SHARE   "share"
 #define TRASHCTL_PARENT_DIR_TRASH   "Trash"
-#define TRASHCTL_PARENT_DIR_FILES   "files/"
+#define TRASHCTL_PARENT_DIR_FILES   "files"
 
 /* ARGUMENT: MACROS */
 #define TRASHCTL_ARG_CNT_ONE        1
