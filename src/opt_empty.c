@@ -7,7 +7,7 @@ static int empty_all_files(struct environment_info* env)
     int err, status;
     errno = 0;
 
-    pid pid_rm = fork();
+    pid_t pid_rm = fork();
 
     if(pid_rm < 0){
         fprintf(stderr, "[ERROR] %s\n", strerror(errno));
@@ -21,7 +21,7 @@ static int empty_all_files(struct environment_info* env)
         char usr_uname_temp[64] = "USER=";
         char *usr_uname = strncat(usr_uname_temp, env->uname, usr_uname_length); // this is malloc'd, must be free()'d
 
-        char *const argv[] = {"rm", usr_trash_dir, NULL};
+        char *const argv[] = {"rm", "*", usr_trash_dir, NULL};
         char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
         execve(TRASHCTL_RM_PATH, argv, envp);
@@ -43,5 +43,9 @@ static int empty_all_files(struct environment_info* env)
 int trashctl_empty(struct environment_info* env)
 {
     int err;
+
+    empty_all_files(env);
+
+    return 0;
 
 }

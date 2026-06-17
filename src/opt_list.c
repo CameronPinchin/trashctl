@@ -1,18 +1,18 @@
 #include "../include/trashctl.h"
 /* This will cover the list command line option for trashctl */
 
-static int trash_dir_access_check(struct environment_info *env)
-{
-    int err;
-    errno = 0;
-
-    if((err = access(env->trash_dir, F_OK)) == -1) {
-        fprintf(stderr, "[ERROR]: %s \n", strerror(errno));
-        return 1;
-    }
-
-    return 0;
-}
+// static int trash_dir_access_check(struct environment_info *env)
+// {
+//     int err;
+//     errno = 0;
+//
+//     if((err = access(env->trash_dir, F_OK)) == -1) {
+//         fprintf(stderr, "[ERROR]: %s \n", strerror(errno));
+//         return 1;
+//     }
+//
+//     return 0;
+// }
 
 static int trashctl_list_operation(struct environment_info *env)
 {

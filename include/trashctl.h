@@ -51,6 +51,7 @@ struct environment_info {
 /* FORWARD DECLARATIONS */
 int initialize(int argc, char** argv);
 int trashctl_list(struct environment_info* env);
+int trashctl_empty(struct environment_info* env);
 
 
 #endif

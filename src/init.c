@@ -160,6 +160,9 @@ int initialize(int argc, char** argv)
             /* test trashctl list */
             trashctl_list(&env);
 
+            /* test trashctl empty*/
+            trashctl_empty(&env);
+
             return EXIT_SUCCESS;
         case TRASHCTL_ARG_CNT_THREE:
 
