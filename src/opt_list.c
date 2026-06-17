@@ -11,7 +11,6 @@ static int trash_dir_access_check(struct environment_info *env)
         return 1;
     }
 
-    printf("%s exists.\n", env->trash_dir);
     return 0;
 }
 
@@ -58,11 +57,6 @@ int trashctl_list(struct environment_info* env)
     /* check for */
     int err;
     errno = 0;
-
-    if((err = trash_dir_access_check(env)) == 1){
-        fputs("[ERROR]: trashctl was unable to find your trash directory.\n", stderr);
-        return 1;
-    }
 
     if((err = trashctl_list_operation(env)) == 1){
         fputs("[ERROR]: trashctl was unable to list files from your trash directory.\n", stderr);

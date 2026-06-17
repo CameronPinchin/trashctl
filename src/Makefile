@@ -6,8 +6,8 @@ CFLAGS_DEBUG= -Wall -Wextra -g
 TARGET=trashctl
 TARGET_DEBUG=trashctl-dbg
 
-SRCS=trashctl.c init.c opt_list.c
-OBJS=trashctl.o init.o opt_list.o
+SRCS=trashctl.c init.c opt_list.c opt_empty.c
+OBJS=trashctl.o init.o opt_list.o opt_empty.o
 
 TARGET_DIR=releases
 
