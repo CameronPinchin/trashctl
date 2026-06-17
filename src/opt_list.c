@@ -37,9 +37,7 @@ static int trashctl_list_operation(struct environment_info *env)
     //     return 1;
     // }
 
-    fprintf(stderr, "[DBG] usr_trash_dir: %s\n[DBG] env->trash_dir: %s\n[DBG] usr_uname: %s\n", usr_trash_dir, env->trash_dir, usr_uname);
-
-    char *const argv[] = {"ls", "-l", NULL};
+    char *const argv[] = {"ls /home/cameron", "-l", NULL};
     char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
     execve(TRASHCTL_LS_PATH, argv, envp);
