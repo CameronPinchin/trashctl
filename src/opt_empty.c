@@ -24,7 +24,7 @@ static int empty_all_files(struct environment_info* env)
 
         char *usr_trash_dir_rm_string = strcat(usr_trash_dir, "*"); /* execve does not expand wildcards (like *) */
 
-        char *const argv[] = {"find", usr_trash_dir, "-type f", "-delete", NULL};
+        char *const argv[] = {"find", usr_trash_dir, "type f", "delete", NULL};
         char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
         execve(TRASHCTL_RM_PATH, argv, envp);
