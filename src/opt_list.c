@@ -25,7 +25,7 @@ static int trashctl_list_operation(struct environment_info *env)
     if(pid_ls < 0){
         fprintf(stderr, "[ERROR]: fork failure.\n");
         return 1;
-    }
+    } else if (pid_ls == 0){
 
     char *usr_trash_dir = strdup(env->trash_dir);
     size_t usr_uname_length = strlen(usr_trash_dir);
@@ -37,19 +37,24 @@ static int trashctl_list_operation(struct environment_info *env)
     //     return 1;
     // }
 
-    char *const argv[] = {"ls /home/cameron", "-l", NULL};
+    char *const argv[] = {"ls", "-l", NULL};
     char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
     execve(TRASHCTL_LS_PATH, argv, envp);
 
     fprintf(stderr, "[DBG] pid_ls: %d\n", pid_ls);
 
-    if((err = waitpid(pid_ls, &status, 0)) == -1){
-        fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
-        return 1;
+    } else {
+
+        if((err = waitpid(pid_ls, &status, 0)) == -1){
+            fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
+            return 1;
+        }
+
+        fprintf(stderr, "Parent: child process has terminated.\n");
+        return 0;
     }
 
-    fprintf(stderr, "Parent: child process has terminated.\n");
     return 0;
 }
 
