@@ -27,7 +27,7 @@ static int empty_all_files(struct environment_info* env)
         char *const argv[] = {"find", usr_trash_dir, "-mindepth", "1", "-delete", NULL};
         char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
-        execve(TRASHCTL_RM_PATH, argv, envp);
+        execve(TRASHCTL_FIND_PATH, argv, envp);
 
     } else {
 
