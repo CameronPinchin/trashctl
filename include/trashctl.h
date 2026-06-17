@@ -24,7 +24,7 @@
 #define TRASHCTL_PARENT_DIR_LOCAL   ".local"
 #define TRASHCTL_PARENT_DIR_SHARE   "share"
 #define TRASHCTL_PARENT_DIR_TRASH   "Trash"
-#define TRASHCTL_PARENT_DIR_FILES   "files"
+#define TRASHCTL_PARENT_DIR_FILES   "files/"
 
 /* ARGUMENT: MACROS */
 #define TRASHCTL_ARG_CNT_ONE        1
