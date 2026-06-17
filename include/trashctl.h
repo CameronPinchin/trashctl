@@ -17,7 +17,7 @@
 #define TRASHCTL_RM_PATH            "/bin/rm"
 
 /* INIT: DIRECTORY MACROS */
-#define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files"
+#define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files/"
 #define TRASHCTL_TRASH_DIR_LEN      ((size_t)26)
 
 /* INIT: PARENT DIRECTORIES */
