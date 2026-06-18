@@ -29,13 +29,11 @@ static int trashctl_list_operation(struct environment_info *env)
     /* TO-DO
      * - clean up this function (namely local variable initializations)
      */
-    char *usr_trash_dir = strdup(env->trash_dir);
-    size_t usr_uname_length = strlen(usr_trash_dir);
-    char usr_uname_temp[64] = "USER=";
-    char *usr_uname = strncat(usr_uname_temp, env->uname, usr_uname_length); // this is malloc'd, must be free()'d
+    char *t_usr_trash_dir = strdup(env->trash_dir);
+    char *t_usr_uname = strdup(env->uname);// this is malloc'd, must be free()'d
 
-    char *const argv[] = {"ls", "-l", usr_trash_dir, NULL};
-    char *const envp[] = {usr_uname, usr_trash_dir, NULL};
+    char *const argv[] = {"ls", "-l", t_usr_trash_dir, NULL};
+    char *const envp[] = {t_usr_uname, t_usr_trash_dir, NULL};
 
     execve(TRASHCTL_LS_PATH, argv, envp);
 
