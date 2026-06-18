@@ -22,8 +22,6 @@ static int empty_all_files(struct environment_info* env)
         char usr_uname_temp[64] = "USER=";
         char *usr_uname = strncat(usr_uname_temp, env->uname, usr_uname_length); // this is malloc'd, must be free()'d
 
-        char *usr_trash_dir_rm_string = strcat(usr_trash_dir, "*"); /* execve does not expand wildcards (like *) */
-
         char *const argv[] = {"find", usr_trash_dir, "-mindepth", "1", "-delete", NULL};
         char *const envp[] = {usr_uname, usr_trash_dir, NULL};
 
