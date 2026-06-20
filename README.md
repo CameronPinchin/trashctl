@@ -7,11 +7,11 @@ There is a Bash-based utility called trash-cli that provides a utility to manage
 **Note on AI usage**:
 All of the code in this project has been written solely by me, as it was intended as a learning project. AI was used for generic, high-level questions and was specifically instructed not to generate code.
 
-## trashctl | Overview
+## Overview
 
 Why trashctl? This project aims to emulate the 'Trash' or 'Recycling Bin' functionality found on Linux (non-headless) and Windows environments. It provides users options to 'put' a file into the Trash, 'empty' the Trash to clear up space, 'list' all current contents of the Trash directory, and 'delete' a specific file from the Trash directory.
 
-## trashctl | Usage
+## Usage
 
 How do you use trashctl? Here are short descriptions of each command with an example of its usage.
 
@@ -47,14 +47,14 @@ Example: *> trashctl put file_name*
 
 ![put demo](https://i.imgur.com/BUiYT9P.gif)
 
-## trashctl | Trash Directory Location
+## Trash Directory Location
 
 For most Linux distributions, the Trash directory can be found at:
 ***/home/${USER}/.local/share/Trash/files/***
 
 Trashctl will use this directory if it exists, or create the directory if it doesn't.
 
-## trashctl | Behaviour
+## Behaviour
 
 The first run of trashctl will check if the users Trash directory exists. If it does not exist, the Trash directory will be created in the location defined above. 
 
@@ -62,7 +62,7 @@ Trashctl leverages subshells to operate based on user input, and is insulated ag
 
 Trashctl can operate on any singular file, but currently lacks the ability to operate on directories. This functionality is actively being worked on.
 
-## trashctl | Implementation Notes
+## Implementation Notes
 
 
 
