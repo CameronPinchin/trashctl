@@ -44,6 +44,22 @@ Example: *> trashctl put file_name*
 
 ![put demo](https://i.imgur.com/BUiYT9P.gif)
 
+## trashctl | Trash Directory Location
+
+For most Linux distributions, the Trash directory can be found at:
+***/home/${USER}/.local/share/Trash/files/***
+
+Trashctl will use this directory if it exists, or create the directory if it doesn't.
+
+## trashctl | Behaviour
+
+The first run of trashctl will check if the users Trash directory exists. If it does not exist, the Trash directory will be created in the location defined above. 
+
+Trashctl leverages subshells to operate based on user input, and is insulated against fatal errors occurring in the subshell. 
+
+Trashctl can operate on any singular file, but currently lacks the ability to operate on directories. This functionality is actively being worked on.
+
+## trashctl | Implementation Notes
 
 
 
