@@ -71,12 +71,14 @@ static int empty_one_file(struct environment_info* env, char* file_name)
     return 0;
 }
 
-int trashctl_empty(struct environment_info* env)
+int trashctl_empty(struct environment_info* env, char* opt_filepath)
 {
     int err;
 
-    empty_all_files(env);
-    //empty_one_file(env, "test03");
+    if(opt_filepath == NULL){
+        return empty_all_files(env);
+    } else {
+        return empty_one_file(env, opt_filepath);
+    }
 
-    return 0;
 }

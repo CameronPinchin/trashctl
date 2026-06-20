@@ -158,7 +158,7 @@ int initialize(int argc, char** argv)
             trashctl_list(&env);
 
             /* test trashctl empty*/
-            trashctl_empty(&env);
+            trashctl_empty(&env, NULL);
 
             return EXIT_SUCCESS;
         case TRASHCTL_ARG_CNT_THREE:
@@ -167,10 +167,20 @@ int initialize(int argc, char** argv)
                 return EXIT_FAILURE;
             }
 
-            /* a two-argument command shall not have three arguments */
             if((err = init_standalone_arg_check(argv[1])) == 1) {
                 return EXIT_FAILURE;
             }
+
+            if((err = env_info_populate(&env)) == 1) {
+                return EXIT_FAILURE;
+            }
+
+            if((err = trash_dir_access_check(&env)) == 1) {
+                if((err = trash_dir_create_dir_p(&env)) == 1) {
+                    return EXIT_FAILURE;
+                }
+            }
+            trashctl_empty(&env, argv[2]);
 
             return EXIT_SUCCESS;
         default:
