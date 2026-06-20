@@ -4,7 +4,7 @@
 
 There is a Bash-based utility called trash-cli that provides a utility to manage your *trashbin* on Linux systems. This aims to emulate that functionality, written in C. There are other C-based versions of this, so this is more of a learning project.
 
-**Note on AI usage**
+**Note on AI usage**:
 All of the code in this project has been written solely by me, as it was intended as a learning project. AI was used for generic, high-level questions and was specifically instructed to not generate code.
 
 ## trashctl | Overview
