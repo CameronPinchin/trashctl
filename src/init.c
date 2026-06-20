@@ -19,7 +19,6 @@ static void help_message()
     fputs("     list                List trashed files.\n", stdout);
     fputs("     restore             Restore a trashed file.\n", stdout);
     fputs("     empty               Empty the trash.\n", stdout);
-    fputs("     empty [n]           Remove files older than [n] days.\n", stdout);
     fputs("     delete [pattern]    Delete a specific trashed file.\n", stdout);
 }
 
@@ -120,6 +119,36 @@ static int trash_dir_create_dir_p(struct environment_info* env)
     return 0;
 }
 
+/* This will likely need redoing, originally I wanted to use a switch-case statement but strcmp() cannot be used.
+ *   (switch-case statements require case labels to be compile-time constants, of which strcmp() is not )
+ */
+static int parse_command(struct environment_info* env, char* arg)
+{
+    int err;
+
+    if(strcmp(arg, "empty") == 0){
+        return trashctl_empty(env);
+    } else if(strcmp(arg, "list") == 0){
+        return trashctl_list(env);
+    } else {
+        fprintf(stderr, "[ERROR] Argument input is invalid, please try again.\n");
+        return 1;
+    }
+
+}
+
+static int parse_command_with_file(struct environment_info* env, char* arg_1, char* arg_2)
+{
+    if(strcmp(arg_1, "delete") == 0){
+        return trashctl_delete(env, arg_2);
+    } else if(strcmp(arg_1, "put") == 0){
+        return trashctl_put(env, arg_2);
+    } else {
+        fprintf(stderr, "[ERROR] Argument input is invalid, please try again.\n");
+        return 1;
+    }
+}
+
 int initialize(int argc, char** argv)
 {
     int err;
@@ -151,14 +180,17 @@ int initialize(int argc, char** argv)
                 }
             }
 
+            /* Need a switch-case function to determine what action to take based on argv[1] */
             /* Add parsing logic to determine what the second argument is and proceed accordingly */
             /*  i.e., list vs empty are both two argument commands */
 
             /* test trashctl list */
-            trashctl_list(&env);
+            //trashctl_list(&env);
 
             /* test trashctl empty*/
-            trashctl_empty(&env);
+            //trashctl_empty(&env);
+
+            parse_command(&env, argv[1]);
 
             return EXIT_SUCCESS;
         case TRASHCTL_ARG_CNT_THREE:
@@ -185,7 +217,10 @@ int initialize(int argc, char** argv)
             //trashctl_delete(&env, argv[2]);
 
             /* test trashctl put */
-            trashctl_put(&env, argv[2]);
+            //trashctl_put(&env, argv[2]);
+
+            parse_command_with_file(&env, argv[1], argv[2]);
+
 
             return EXIT_SUCCESS;
         default:
