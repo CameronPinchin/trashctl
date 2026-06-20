@@ -8,6 +8,7 @@
 #include <pwd.h>
 #include <errno.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #ifndef TRASHCTL_H
 #define TRASHCTL_H
@@ -16,7 +17,8 @@
 #define TRASHCTL_LS_PATH            "/bin/ls"
 #define TRASHCTL_RM_PATH            "/bin/rm"
 #define TRASHCTL_FIND_PATH          "/bin/find"
-#define TRASHCTL_SH_PATH          "/bin/sh"
+#define TRASHCTL_SH_PATH            "/bin/sh"
+#define TRASHCTL_DEV_NULL_PATH      "/dev/null"
 
 /* INIT: DIRECTORY MACROS */
 #define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files/"
@@ -53,7 +55,8 @@ struct environment_info {
 /* FORWARD DECLARATIONS */
 int initialize(int argc, char** argv);
 int trashctl_list(struct environment_info* env);
-int trashctl_empty(struct environment_info* env, char* opt_filepath);
-
+int trashctl_empty(struct environment_info* env);
+int trashctl_delete(struct environment_info* env, char* file_path);
+int trashctl_put(struct environment_info* env, char* file_path);
 
 #endif

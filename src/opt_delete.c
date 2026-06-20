@@ -1,7 +1,6 @@
 #include "../include/trashctl.h"
-/* This will cover the empty command line option for trashctl */
+/* This file covers the trashctl delete option. Logic currently housed within the opt_empty.c file, but is to be moved here. */
 
-/* fork and exec /bin/sh to then just run rm commands */
 static int init_shell(struct environment_info* env, char* shell_command)
 {
     int err, status, fd;
@@ -30,29 +29,29 @@ static int init_shell(struct environment_info* env, char* shell_command)
     return 0;
 }
 
-static int empty_all_files(struct environment_info* env)
+static int delete_file(struct environment_info* env, char* file_name)
 {
     int err;
     errno = 0;
 
-    char empty_all_files_command[128] = "rm ";
+    char delete_file_command[128] = "rm ";
     char usr_target_file_path[64] = {};
 
-    char *cmd_ptr = empty_all_files_command;
+    char *cmd_ptr = delete_file_command;
 
     strcpy(usr_target_file_path, env->trash_dir);
-    strcat(usr_target_file_path, "*");
-    strcat(empty_all_files_command, usr_target_file_path);
+    strcat(usr_target_file_path, file_name);
+    strcat(delete_file_command, usr_target_file_path);
 
     if((err = init_shell(env, cmd_ptr) == 1)){
-        fprintf(stderr, "[ERROR] Fork failure\n");
+        fprintf(stderr, "[ERROR] Failed to open shell for file deletion.\n");
         return 1;
     }
 
     return 0;
 }
 
-int trashctl_empty(struct environment_info* env)
+int trashctl_delete(struct environment_info* env, char* file_name)
 {
-    return empty_all_files(env);
+    return delete_file(env, file_name);
 }

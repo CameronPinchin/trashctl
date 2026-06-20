@@ -5,7 +5,7 @@ static const char* valid_arguments[] = {TRASHCTL_ARG_PUT, TRASHCTL_ARG_LIST, \
 };
 
 static const char* standalone_arguments[] = {TRASHCTL_ARG_LIST, TRASHCTL_ARG_PUT, \
-    TRASHCTL_ARG_EMPTY
+    TRASHCTL_ARG_EMPTY, TRASHCTL_ARG_DELETE
 };
 
 static const char* parent_directories[] = {TRASHCTL_PARENT_DIR_LOCAL, TRASHCTL_PARENT_DIR_SHARE, \
@@ -43,7 +43,7 @@ static int init_standalone_arg_check(const char* arg)
 {
     int i;
 
-    for(i = 0; i < 3; ++i){
+    for(i = 0; i < 4; ++i){
         if(strcmp(arg, standalone_arguments[i]) == 0) {
             return 0;
         }
@@ -158,7 +158,7 @@ int initialize(int argc, char** argv)
             trashctl_list(&env);
 
             /* test trashctl empty*/
-            trashctl_empty(&env, NULL);
+            trashctl_empty(&env);
 
             return EXIT_SUCCESS;
         case TRASHCTL_ARG_CNT_THREE:
@@ -180,7 +180,12 @@ int initialize(int argc, char** argv)
                     return EXIT_FAILURE;
                 }
             }
-            trashctl_empty(&env, argv[2]);
+
+            /* test trashctl delete */
+            //trashctl_delete(&env, argv[2]);
+
+            /* test trashctl put */
+            trashctl_put(&env, argv[2]);
 
             return EXIT_SUCCESS;
         default:
