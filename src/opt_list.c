@@ -1,6 +1,15 @@
 #include "../include/trashctl.h"
 /* This will cover the list command line option for trashctl */
 
+/**
+ * @brief Initializes a subshell using the fork and exec flow.
+ *
+ * Starts a subshell if the fork is successful and runs a user-inputted command.
+ *
+ * @param[in] env A pointer to a environment_info struct.
+ * @param[in] shell_command A pointer to a complete shell command to be run in the subshell.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int init_shell(struct environment_info* env, char* shell_command)
 {
     int err, status;
@@ -24,6 +33,15 @@ static int init_shell(struct environment_info* env, char* shell_command)
     return 0;
 }
 
+
+/**
+ * @brief Internal function called by trashctl_list().
+ *
+ * Performs string manipulation to create a valid shell command and passes it to init_shell().
+ *
+ * @param[in] env A pointer to a environment_info struct.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int trashctl_list_operation(struct environment_info *env)
 {
     int err;
@@ -42,6 +60,14 @@ static int trashctl_list_operation(struct environment_info *env)
     return 0;
 }
 
+/**
+ * @brief Exposed function called upon by initalize when a user inputs an 'list' call.
+ *
+ * Simply calls trashctl_list_operation(env).
+ *
+ * @param[in] env A pointer to a environment_info struct.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 int trashctl_list(struct environment_info* env)
 {
     /* check for */

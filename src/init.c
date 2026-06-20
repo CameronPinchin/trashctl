@@ -155,7 +155,6 @@ static int trash_dir_create_dir_p(struct environment_info* env)
     size_t remaining = capacity;
     int written;
     for(i = 0; i < 4; ++i) {
-        fprintf(stderr, "[%d] c: %ld o: %ld\n", i, capacity, offset);
         remaining = capacity - offset;
 
         if((written = snprintf(working_directory + offset, remaining, "/%s", parent_directories[i])) == -1){

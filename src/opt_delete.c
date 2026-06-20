@@ -1,6 +1,15 @@
 #include "../include/trashctl.h"
 /* This file covers the trashctl delete option. Logic currently housed within the opt_empty.c file, but is to be moved here. */
 
+/**
+ * @brief Initializes a subshell using the fork and exec flow.
+ *
+ * Starts a subshell if the fork is successful and runs a user-inputted command.
+ *
+ * @param[in] env A pointer to a environment_info struct.
+ * @param[in] shell_command A pointer to a complete shell command to be run in the subshell.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int init_shell(struct environment_info* env, char* shell_command)
 {
     int err, status, fd;
@@ -29,6 +38,16 @@ static int init_shell(struct environment_info* env, char* shell_command)
     return 0;
 }
 
+
+/**
+ * @brief Internal function called by trashctl_delete().
+ *
+ * Removes a file matching the trash_dir/file_name path.
+ *
+ * @param[in] env A pointer to a environment_info struct.
+ * @param[in] file_name A pointer to a user-inputted file_name used to create a shell command.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int delete_file(struct environment_info* env, char* file_name)
 {
     int err;
@@ -51,6 +70,16 @@ static int delete_file(struct environment_info* env, char* file_name)
     return 0;
 }
 
+
+/**
+ * @brief Exposed function called upon by initalize when a user inputs an 'delete' call.
+ *
+ * Simply calls empty_all_files(env) and returns its output.
+ *
+ * @param[in] env A pointer to a environment_info struct.
+ * @param[in] file_name A pointer to a user-inputted file_name to be passed to init_shell().
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 int trashctl_delete(struct environment_info* env, char* file_name)
 {
     return delete_file(env, file_name);
