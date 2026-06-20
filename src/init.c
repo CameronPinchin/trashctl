@@ -12,6 +12,30 @@ static const char* parent_directories[] = {TRASHCTL_PARENT_DIR_LOCAL, TRASHCTL_P
     TRASHCTL_PARENT_DIR_TRASH, TRASHCTL_PARENT_DIR_FILES
 };
 
+enum commands { CMD_UNKNOWN, CMD_PUT, CMD_LIST, CMD_EMPTY, CMD_DELETE };
+
+/**
+ * @brief Takes a pointer to a user-inputted argument and determines its validity.
+ *
+ * Compares and constrasts an inputted user command against four acceptable options to determine what action to take.
+ *
+ * @param[in] cmd A pointer to a user-inputted command.
+ * @return The integer representation of the command derived from the commands enum.
+ */
+static enum commands get_command_id(const char* cmd)
+{
+    if(strcmp(cmd, "put") == 0){ return CMD_PUT; }
+    if(strcmp(cmd, "list") == 0){ return CMD_LIST; }
+    if(strcmp(cmd, "empty") == 0){ return CMD_EMPTY; }
+    if(strcmp(cmd, "delete") == 0){ return CMD_DELETE; }
+    return CMD_UNKNOWN;
+}
+
+/**
+ * @brief Prints out a help message.
+ *
+ * Prints out the default help message when trashctl is run without any parameters.
+ */
 static void help_message()
 {
     fputs("traschtl [put, list, restore, empty, delete] [file]\n", stdout);
@@ -22,6 +46,14 @@ static void help_message()
     fputs("     delete [pattern]    Delete a specific trashed file.\n", stdout);
 }
 
+/**
+ * @brief Takes a pointer to a user-inputted argument and determines its validity.
+ *
+ * Compares and constrasts an inputted user command against four acceptable options to determine what action to take.
+ *
+ * @param[in] arg A pointer to a user-inputted command.
+ * @return If the input is valid, 0 is returned on success. If the function fails, 1 will be returned.
+ */
 static int init_validate_argument(const char* arg)
 {
     int i;
@@ -35,9 +67,7 @@ static int init_validate_argument(const char* arg)
     return 1;
 }
 
-/* Probably will find a better name for this.
-    *  - intended for case '2', where list, restore, or empty do not require a third argument
-    */
+
 static int init_standalone_arg_check(const char* arg)
 {
     int i;
@@ -51,6 +81,14 @@ static int init_standalone_arg_check(const char* arg)
     return 1;
 }
 
+/**
+ * @brief Populates an environment_info struct with user-specific information.
+ *
+ * Takes in a pointer to a environment_info struct and populates each field based on user information.
+ *
+ * @param[in] env A pointer to a environment_info struct instantiated in the initialize function.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int env_info_populate(struct environment_info* env)
 {
     int err;
@@ -77,6 +115,14 @@ static int env_info_populate(struct environment_info* env)
     return 0;
 }
 
+/**
+ * @brief Determines if the users trash directory exists.
+ *
+ * Takes in a pointer to a environment_info struct and determines if the trash directory exists based on the trash_dir field.
+ *
+ * @param[in] env A pointer to a environment_info struct.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int trash_dir_access_check(struct environment_info* env)
 {
     int err;
@@ -90,6 +136,14 @@ static int trash_dir_access_check(struct environment_info* env)
     return 0;
 }
 
+/**
+ * @brief Iteratively creates directories for the users trash directory if trash_dir_access_check() returns 1.
+ *
+ * Takes in a pointer to a environment_info struct and creates missing directories.
+ *
+ * @param[in] env A pointer to a environment_info struct instantiated in the initialize function.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int trash_dir_create_dir_p(struct environment_info* env)
 {
     int err, i;
@@ -119,36 +173,58 @@ static int trash_dir_create_dir_p(struct environment_info* env)
     return 0;
 }
 
-/* This will likely need redoing, originally I wanted to use a switch-case statement but strcmp() cannot be used.
- *   (switch-case statements require case labels to be compile-time constants, of which strcmp() is not )
+/**
+ * @brief Parses a user-inputted argument to determine what action to take.
+ *
+ * Determines the action to take based on a user-inputted argument then calls the appropriate function.
+ *
+ * @param[in] env A pointer to a environment_info struct instantiated in the initialize function.
+ * @param[in] arg A pointer to a user-inputted argument used to determine the command ID.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
 static int parse_command(struct environment_info* env, char* arg)
 {
-    int err;
-
-    if(strcmp(arg, "empty") == 0){
-        return trashctl_empty(env);
-    } else if(strcmp(arg, "list") == 0){
-        return trashctl_list(env);
-    } else {
-        fprintf(stderr, "[ERROR] Argument input is invalid, please try again.\n");
-        return 1;
+    switch(get_command_id(arg)) {
+        case CMD_LIST:
+            return trashctl_list(env);
+        case CMD_EMPTY:
+            return trashctl_empty(env);
+        default:
+            return 1;
     }
-
 }
 
+/**
+ * @brief Parses a user-inputted argument to determine what action to take.
+ *
+ * Determines the action to take based on a user-inputted argument then calls the appropriate function.
+ *
+ * @param[in] env A pointer to a environment_info struct instantiated in the initialize function.
+ * @param[in] arg_1 A pointer to a user-inputted argument used to determine the command ID.
+ * @param[in] arg_2 A pointer to a user-inputted argument that is used to identify the target file for the user.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 static int parse_command_with_file(struct environment_info* env, char* arg_1, char* arg_2)
 {
-    if(strcmp(arg_1, "delete") == 0){
-        return trashctl_delete(env, arg_2);
-    } else if(strcmp(arg_1, "put") == 0){
-        return trashctl_put(env, arg_2);
-    } else {
-        fprintf(stderr, "[ERROR] Argument input is invalid, please try again.\n");
-        return 1;
+    switch(get_command_id(arg_1)) {
+        case CMD_DELETE:
+            return trashctl_delete(env, arg_2);
+        case CMD_PUT:
+            return trashctl_put(env, arg_2);
+        default:
+            return 1;
     }
 }
 
+/**
+ * @brief Parent function for init.c that is called upon in trashctl.c. Used to initialize all aspects of trashctl.
+ *
+ * Initalizes all necessary components of trashctl and determines what action to take based on user-input.
+ *
+ * @param[in] argc An integer representation of the number of commands passed to trashctl.
+ * @param[in] argv An array of char pointers that contain each inputted argument.
+ * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
+ */
 int initialize(int argc, char** argv)
 {
     int err;
@@ -180,17 +256,10 @@ int initialize(int argc, char** argv)
                 }
             }
 
-            /* Need a switch-case function to determine what action to take based on argv[1] */
-            /* Add parsing logic to determine what the second argument is and proceed accordingly */
-            /*  i.e., list vs empty are both two argument commands */
-
-            /* test trashctl list */
-            //trashctl_list(&env);
-
-            /* test trashctl empty*/
-            //trashctl_empty(&env);
-
-            parse_command(&env, argv[1]);
+            if((err = parse_command(&env, argv[1])) == 1){
+                fprintf(stderr, "[ERROR] Failed on argument: %s. \n", argv[1]);
+                return EXIT_FAILURE;
+            }
 
             return EXIT_SUCCESS;
         case TRASHCTL_ARG_CNT_THREE:
@@ -213,21 +282,16 @@ int initialize(int argc, char** argv)
                 }
             }
 
-            /* test trashctl delete */
-            //trashctl_delete(&env, argv[2]);
-
-            /* test trashctl put */
-            //trashctl_put(&env, argv[2]);
-
-            parse_command_with_file(&env, argv[1], argv[2]);
-
+            if((err = parse_command_with_file(&env, argv[1], argv[2])) == 1){
+                fprintf(stderr, "[ERROR] Failed on arguments: %s, %s. \n", argv[1], argv[2]);
+                return EXIT_FAILURE;
+            }
 
             return EXIT_SUCCESS;
         default:
 
             return EXIT_FAILURE;
     }
-
 
     return EXIT_SUCCESS;
 }

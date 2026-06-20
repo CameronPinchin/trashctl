@@ -43,6 +43,11 @@
 #define TRASHCTL_ARG_EMPTY          "empty"
 #define TRASHCTL_ARG_DELETE         "delete"
 
+//#define CMD_PUT                     1
+//#define CMD_DELETE                  2
+//#define CMD_EMPTY                   3
+//#define CMD_LIST                    4
+
 /* STRUCT DEFINITIONS */
 struct environment_info {
     const char* uname;                /* Identifier for the username                        */
