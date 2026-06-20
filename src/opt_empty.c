@@ -1,10 +1,6 @@
 #include "../include/trashctl.h"
 /* This will cover the empty command line option for trashctl */
 
-/* The case where a user just calls trashctl empty, resulting in the entire trashbin being emptied */
-/*  instead of using the rm binary, I could instead delegate this to a shell /bin/sh and then run the command through that*/
-
-
 /* fork and exec /bin/sh to then just run rm commands */
 static int init_shell(struct environment_info* env, char* shell_command)
 {

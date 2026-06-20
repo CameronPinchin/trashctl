@@ -78,7 +78,6 @@ static int env_info_populate(struct environment_info* env)
     return 0;
 }
 
-/* the reason this always failes is due to env->trash_dir always being uninitalized at the time this function is called*/
 static int trash_dir_access_check(struct environment_info* env)
 {
     int err;
@@ -92,10 +91,6 @@ static int trash_dir_access_check(struct environment_info* env)
     return 0;
 }
 
-
-/* this still needs work, as it only uses the static /home/cameron option at the moment.
- *  - Path construction works though, and the directories do get created.
- */
 static int trash_dir_create_dir_p(struct environment_info* env)
 {
     int err, i;
@@ -125,7 +120,6 @@ static int trash_dir_create_dir_p(struct environment_info* env)
     return 0;
 }
 
-/* TO-DO: Need to do an environment check. I.e., do they have a trashbin directory? */
 int initialize(int argc, char** argv)
 {
     int err;

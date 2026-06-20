@@ -1,19 +1,6 @@
 #include "../include/trashctl.h"
 /* This will cover the list command line option for trashctl */
 
-// static int trash_dir_access_check(struct environment_info *env)
-// {
-//     int err;
-//     errno = 0;
-//
-//     if((err = access(env->trash_dir, F_OK)) == -1) {
-//         fprintf(stderr, "[ERROR]: %s \n", strerror(errno));
-//         return 1;
-//     }
-//
-//     return 0;
-// }
-
 static int trashctl_list_operation(struct environment_info *env)
 {
     int err, status;
@@ -26,16 +13,16 @@ static int trashctl_list_operation(struct environment_info *env)
         return 1;
     } else if (pid_ls == 0){
 
-    /* TO-DO
-     * - clean up this function (namely local variable initializations)
-     */
     char *t_usr_trash_dir = strdup(env->trash_dir);
-    char *t_usr_uname = strdup(env->uname);// this is malloc'd, must be free()'d
+    char *t_usr_uname = strdup(env->uname);
 
     char *const argv[] = {"ls", "-l", t_usr_trash_dir, NULL};
     char *const envp[] = {t_usr_uname, t_usr_trash_dir, NULL};
 
     execve(TRASHCTL_LS_PATH, argv, envp);
+
+    free(t_usr_uname);
+    free(t_usr_trash_dir);
 
     } else {
 
