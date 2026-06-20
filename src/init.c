@@ -157,6 +157,9 @@ int initialize(int argc, char** argv)
                 }
             }
 
+            /* Add parsing logic to determine what the second argument is and proceed accordingly */
+            /*  i.e., list vs empty are both two argument commands */
+
             /* test trashctl list */
             trashctl_list(&env);
 
