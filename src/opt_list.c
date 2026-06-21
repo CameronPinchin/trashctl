@@ -70,7 +70,6 @@ static int trashctl_list_operation(struct environment_info *env)
  */
 int trashctl_list(struct environment_info* env)
 {
-    /* check for */
     int err;
     errno = 0;
 
