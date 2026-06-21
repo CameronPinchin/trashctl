@@ -31,21 +31,29 @@ Example: *> trashctl empty*
 
 ![empty demo](https://i.imgur.com/FVKkxHx.gif)
 
-### trashctl delete file_path
+### trashctl delete <filename>
 
 The **delete** command deletes a specific file contained within the users Trash directory. If a file matching the file_path argument is not found, nothing will be returned.
 
-Example: *> trashctl delete file_name* 
+Example: *> trashctl delete <filename>* 
 
 ![delete demo](https://i.imgur.com/fwWdH7P.gif)
 
-### trashctl put
+### trashctl put <filename>
 
 The **put** command moves a file from the current working directory into the users Trash directory. If a file matching the file_name argument is not found, the user will be informed that the file could not be identified.
 
-Example: *> trashctl put file_name* 
+Example: *> trashctl put <filename>* 
 
 ![put demo](https://i.imgur.com/BUiYT9P.gif)
+
+### trashctl restore <filename>
+
+The **restore** command moves a file matching <filename> from the Trash directory into the users current working directory directory. If a file matching the <filename> argument is not found, the user will be informed that the file could not be identified.
+
+Example: *> trashctl put <filename>*
+
+![restore demo](https://i.imgur.com/XuYflam.gif)
 
 ## Trash Directory Location
 
