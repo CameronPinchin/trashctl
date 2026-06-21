@@ -50,7 +50,7 @@ static int trashctl_list_operation(struct environment_info *env)
     char list_files_command[128] = "ls -l ";
     char *cmd_ptr = list_files_command;
 
-    strcat(list_files_command, env->trash_dir);
+    strlcat(list_files_command, env->trash_dir, sizeof(list_files_command));
 
     if((err = init_shell(env, cmd_ptr) == 1)){
         fprintf(stderr, "[ERROR] Fork failed for list operation.\n");

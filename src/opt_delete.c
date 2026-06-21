@@ -58,8 +58,8 @@ static int delete_file(struct environment_info* env, char* file_name)
     char *cmd_ptr = delete_file_command;
 
     strlcpy(usr_target_file_path, env->trash_dir, sizeof(usr_target_file_path));
-    strcat(usr_target_file_path, file_name);
-    strcat(delete_file_command, usr_target_file_path);
+    strlcat(usr_target_file_path, file_name, sizeof(usr_target_file_path));
+    strlcat(delete_file_command, usr_target_file_path, sizeof(delete_file_command));
 
     if((err = init_shell(env, cmd_ptr) == 1)){
         fprintf(stderr, "[ERROR] Failed to open shell for file deletion.\n");

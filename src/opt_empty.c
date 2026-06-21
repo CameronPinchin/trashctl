@@ -58,8 +58,8 @@ static int empty_all_files(struct environment_info* env)
 
     //strcpy(usr_target_file_path, env->trash_dir); // change to strlcpy()
     strlcpy(usr_target_file_path, env->trash_dir, sizeof(usr_target_file_path));
-    strcat(usr_target_file_path, "*");
-    strcat(empty_all_files_command, usr_target_file_path);
+    strlcat(usr_target_file_path, "*", sizeof(usr_target_file_path));
+    strlcat(empty_all_files_command, usr_target_file_path, sizeof(empty_all_files_command));
 
     if((err = init_shell(env, cmd_ptr) == 1)){
         fprintf(stderr, "[ERROR] Fork failure\n");

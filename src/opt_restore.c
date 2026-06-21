@@ -65,12 +65,12 @@ static int restore_file(struct environment_info* env, char* file_name)
 
     char *cmd_ptr = restore_file_command;
 
-    strcat(restore_file_path, file_name);
+    strlcat(restore_file_path, file_name, sizeof(restore_file));
     restore_file_path_len = strlen(restore_file_path);
     restore_file_path[restore_file_path_len] = ' ';
 
-    strcat(restore_file_path, cwd);
-    strcat(restore_file_command, restore_file_path);
+    strlcat(restore_file_path, cwd, sizeof(restore_file_path));
+    strlcat(restore_file_command, restore_file_path, sizeof(restore_file_command));
 
     if((err = init_shell(env, cmd_ptr)) == 1){
         fprintf(stderr, "[ERROR] Fork failed for restore command.\n");

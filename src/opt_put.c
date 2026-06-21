@@ -63,7 +63,7 @@ static int put_file(struct environment_info* env, char* file_name)
 
     char *cmd_ptr = put_file_command;
     cwd[cwd_length] = '/';
-    strcat(cwd, file_name);
+    strlcat(cwd, file_name, sizeof(cwd));
     cwd_length = strlen(cwd);
     cwd[cwd_length] = ' ';
 
