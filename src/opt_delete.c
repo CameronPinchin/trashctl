@@ -24,7 +24,7 @@ static int init_shell(struct environment_info* env, char* shell_command)
         return 1;
     } else if(pid_sh == 0){
         /* child process */
-        if((err = execl(TRASHCTL_SH_PATH, "sh", "-c", shell_command, "> /dev/null 2>&1",NULL)) == -1){
+        if((err = execl(TRASHCTL_SH_PATH, "sh", "-c", shell_command, NULL)) == -1){
             return 1;
         }
     } else {
@@ -37,7 +37,6 @@ static int init_shell(struct environment_info* env, char* shell_command)
 
     return 0;
 }
-
 
 /**
  * @brief Internal function called by trashctl_delete().
@@ -58,7 +57,7 @@ static int delete_file(struct environment_info* env, char* file_name)
 
     char *cmd_ptr = delete_file_command;
 
-    strcpy(usr_target_file_path, env->trash_dir);
+    strlcpy(usr_target_file_path, env->trash_dir, sizeof(usr_target_file_path));
     strcat(usr_target_file_path, file_name);
     strcat(delete_file_command, usr_target_file_path);
 
@@ -69,7 +68,6 @@ static int delete_file(struct environment_info* env, char* file_name)
 
     return 0;
 }
-
 
 /**
  * @brief Exposed function called upon by initalize when a user inputs an 'delete' call.

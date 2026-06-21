@@ -24,7 +24,7 @@ static int init_shell(struct environment_info* env, char* shell_command)
         return 1;
     } else if(pid_sh == 0){
         /* child process */
-        if((err = execl(TRASHCTL_SH_PATH, "sh", "-c", shell_command, "> /dev/null 2>&1",NULL)) == -1){
+        if((err = execl(TRASHCTL_SH_PATH, "sh", "-c", shell_command, NULL)) == -1){
             return 1;
         }
     } else {
@@ -56,7 +56,8 @@ static int empty_all_files(struct environment_info* env)
 
     char *cmd_ptr = empty_all_files_command;
 
-    strcpy(usr_target_file_path, env->trash_dir);
+    //strcpy(usr_target_file_path, env->trash_dir); // change to strlcpy()
+    strlcpy(usr_target_file_path, env->trash_dir, sizeof(usr_target_file_path));
     strcat(usr_target_file_path, "*");
     strcat(empty_all_files_command, usr_target_file_path);
 

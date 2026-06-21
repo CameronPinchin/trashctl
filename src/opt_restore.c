@@ -1,5 +1,5 @@
 #include "../include/trashctl.h"
-/* This covers the case of moving files to your trash directory */
+/* This covers the case of moving files from your trash directory */
 
 /**
  * @brief Initializes a subshell using the fork and exec flow.
@@ -39,39 +39,41 @@ static int init_shell(struct environment_info* env, char* shell_command)
 }
 
 /**
- * @brief Internal function called by trashctl_put().
+ * @brief Internal function called by trashctl_restore().
  *
- * Moves the file matching file_name into the users trash directory.
+ * Removes a file matching the file_name input from the users Trash directory into the current working directory.
  *
  * @param[in] env A pointer to a environment_info struct.
  * @param[in] file_name A pointer to a user-inputted file_name used to create a shell command.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
-static int put_file(struct environment_info* env, char* file_name)
+static int restore_file(struct environment_info* env, char* file_name)
 {
-    int err, cwd_length;
+    int err, restore_file_path_len, cwd_len;
     errno = 0;
 
-    char cwd[1024] = {};
+    char cwd[256] = {};
     getcwd(cwd, sizeof(cwd));
-    cwd_length = strlen(cwd);
+    cwd_len = strlen(cwd);
+    cwd[cwd_len] = '/';
 
-    char put_file_command[256] = "mv ";
-    char put_file_path[128] = {};
+    char restore_file_command[256] = "mv ";
+    char restore_file_path[512] = {};
 
-    strlcpy(put_file_path, env->trash_dir, sizeof(put_file_path));
+    strlcpy(restore_file_path, env->trash_dir, sizeof(restore_file_path));
+    restore_file_path_len = strlen(restore_file_path);
 
-    char *cmd_ptr = put_file_command;
-    cwd[cwd_length] = '/';
-    strcat(cwd, file_name);
-    cwd_length = strlen(cwd);
-    cwd[cwd_length] = ' ';
+    char *cmd_ptr = restore_file_command;
 
-    strcat(cwd, put_file_path);
-    strcat(put_file_command, cwd);
+    strcat(restore_file_path, file_name);
+    restore_file_path_len = strlen(restore_file_path);
+    restore_file_path[restore_file_path_len] = ' ';
+
+    strcat(restore_file_path, cwd);
+    strcat(restore_file_command, restore_file_path);
 
     if((err = init_shell(env, cmd_ptr)) == 1){
-        fprintf(stderr, "[ERROR] Fork failed for put command.\n");
+        fprintf(stderr, "[ERROR] Fork failed for restore command.\n");
         return 1;
     }
 
@@ -79,15 +81,15 @@ static int put_file(struct environment_info* env, char* file_name)
 }
 
 /**
- * @brief Exposed function called upon by initalize when a user inputs an 'put' call.
+ * @brief Exposed function called upon by initalize when a user inputs an 'restore' call.
  *
- * Simply calls put_file(env, file_name) and returns its output.
+ * Simply calls restore_file(env, file_name) and returns its output.
  *
  * @param[in] env A pointer to a environment_info struct.
  * @param[in] file_name A pointer to a user-inputted file_name to be passed to init_shell().
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
-int trashctl_put(struct environment_info* env, char* file_name)
+int trashctl_restore(struct environment_info* env, char* file_name)
 {
-    return put_file(env, file_name);
+    return restore_file(env, file_name);
 }

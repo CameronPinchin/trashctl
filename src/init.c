@@ -5,14 +5,14 @@ static const char* valid_arguments[] = {TRASHCTL_ARG_PUT, TRASHCTL_ARG_LIST, \
 };
 
 static const char* standalone_arguments[] = {TRASHCTL_ARG_LIST, TRASHCTL_ARG_PUT, \
-    TRASHCTL_ARG_EMPTY, TRASHCTL_ARG_DELETE
+    TRASHCTL_ARG_EMPTY, TRASHCTL_ARG_DELETE, TRASHCTL_ARG_RESTORE
 };
 
 static const char* parent_directories[] = {TRASHCTL_PARENT_DIR_LOCAL, TRASHCTL_PARENT_DIR_SHARE, \
     TRASHCTL_PARENT_DIR_TRASH, TRASHCTL_PARENT_DIR_FILES
 };
 
-enum commands { CMD_UNKNOWN, CMD_PUT, CMD_LIST, CMD_EMPTY, CMD_DELETE };
+enum commands { CMD_UNKNOWN, CMD_PUT, CMD_LIST, CMD_EMPTY, CMD_DELETE, CMD_RESTORE };
 
 /**
  * @brief Takes a pointer to a user-inputted argument and determines its validity.
@@ -28,6 +28,7 @@ static enum commands get_command_id(const char* cmd)
     if(strcmp(cmd, "list") == 0){ return CMD_LIST; }
     if(strcmp(cmd, "empty") == 0){ return CMD_EMPTY; }
     if(strcmp(cmd, "delete") == 0){ return CMD_DELETE; }
+    if(strcmp(cmd, "restore") == 0){ return CMD_RESTORE; }
     return CMD_UNKNOWN;
 }
 
@@ -67,12 +68,11 @@ static int init_validate_argument(const char* arg)
     return 1;
 }
 
-
 static int init_standalone_arg_check(const char* arg)
 {
     int i;
 
-    for(i = 0; i < 4; ++i){
+    for(i = 0; i < 5; ++i){
         if(strcmp(arg, standalone_arguments[i]) == 0) {
             return 0;
         }
@@ -210,6 +210,8 @@ static int parse_command_with_file(struct environment_info* env, char* arg_1, ch
             return trashctl_delete(env, arg_2);
         case CMD_PUT:
             return trashctl_put(env, arg_2);
+        case CMD_RESTORE:
+            return trashctl_restore(env, arg_2);
         default:
             return 1;
     }
@@ -294,4 +296,3 @@ int initialize(int argc, char** argv)
 
     return EXIT_SUCCESS;
 }
-
