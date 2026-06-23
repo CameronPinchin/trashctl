@@ -4,10 +4,6 @@ static const char* valid_arguments[] = {TRASHCTL_ARG_PUT, TRASHCTL_ARG_LIST, \
     TRASHCTL_ARG_RESTORE, TRASHCTL_ARG_EMPTY, TRASHCTL_ARG_DELETE
 };
 
-static const char* standalone_arguments[] = {TRASHCTL_ARG_LIST, TRASHCTL_ARG_PUT, \
-    TRASHCTL_ARG_EMPTY, TRASHCTL_ARG_DELETE, TRASHCTL_ARG_RESTORE
-};
-
 static const char* parent_directories[] = {TRASHCTL_PARENT_DIR_LOCAL, TRASHCTL_PARENT_DIR_SHARE, \
     TRASHCTL_PARENT_DIR_TRASH, TRASHCTL_PARENT_DIR_FILES
 };
@@ -90,7 +86,7 @@ static int env_info_populate(struct environment_info* env)
 
     env->uname = usr->pw_name;
     env->home_dir = usr->pw_dir;
-    env->trash_dir_len = ((strlen(env->home_dir)) + TRASHCTL_TRASH_DIR_LEN);
+    env->trash_dir_len = ((strnlen(env->home_dir, TRASHCTL_MAX_HOME_DIR_LEN)) + TRASHCTL_TRASH_DIR_LEN);
 
     if((err = snprintf(env->trash_dir_mut, env->trash_dir_len, "%s%s", env->home_dir, TRASHCTL_TRASH_DIR)) == -1) {
         fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
@@ -139,7 +135,7 @@ static int trash_dir_create_dir_p(struct environment_info* env)
     strlcpy(working_directory, env->home_dir, sizeof(working_directory));
 
     size_t capacity = sizeof(working_directory);
-    size_t offset = strlen(working_directory);
+    size_t offset = strnlen(working_directory, TRASHCTL_SUBSHELL_CMD_LEN);
     size_t remaining = capacity;
     int written;
     for(i = 0; i < 4; ++i) {

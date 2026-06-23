@@ -28,6 +28,7 @@
 /* INIT: DIRECTORY MACROS */
 #define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files/"
 #define TRASHCTL_TRASH_DIR_LEN      ((size_t)27)
+#define TRASHCTL_MAX_HOME_DIR_LEN   ((size_t)40) /* Usernames can be at most 32 characters, and the home prefix is 6 */
 
 /* INIT: PARENT DIRECTORIES */
 #define TRASHCTL_PARENT_DIR_LOCAL   ".local"
