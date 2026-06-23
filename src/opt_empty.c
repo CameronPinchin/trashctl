@@ -52,7 +52,7 @@ static int empty_all_files(struct environment_info* env)
     errno = 0;
 
     char empty_all_files_command[TRASHCTL_SUBSHELL_CMD_LEN] = "rm ";
-    char usr_target_file_path[TRASHCTL_SUBPATH_LEN] = {};
+    char usr_target_file_path[TRASHCTL_SUBPATH_LEN] = {0};
 
     char *cmd_ptr = empty_all_files_command;
 

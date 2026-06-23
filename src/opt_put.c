@@ -57,7 +57,7 @@ static int put_file(struct environment_info* env, char* file_name)
     cwd_length = strlen(cwd);
 
     char put_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "mv ";
-    char put_file_path[TRASHCTL_SUBPATH_LEN] = {};
+    char put_file_path[TRASHCTL_SUBPATH_LEN] = {0};
 
     strlcpy(put_file_path, env->trash_dir, sizeof(put_file_path));
 

@@ -53,7 +53,7 @@ static int delete_file(struct environment_info* env, char* file_name)
     errno = 0;
 
     char delete_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "rm ";
-    char usr_target_file_path[TRASHCTL_SUBPATH_LEN] = {};
+    char usr_target_file_path[TRASHCTL_SUBPATH_LEN] = {0};
 
     char *cmd_ptr = delete_file_command;
 
