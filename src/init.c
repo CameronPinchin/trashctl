@@ -68,19 +68,6 @@ static int init_validate_argument(const char* arg)
     return 1;
 }
 
-static int init_standalone_arg_check(const char* arg)
-{
-    int i;
-
-    for(i = 0; i < 5; ++i){
-        if(strcmp(arg, standalone_arguments[i]) == 0) {
-            return 0;
-        }
-    }
-
-    return 1;
-}
-
 /**
  * @brief Populates an environment_info struct with user-specific information.
  *
@@ -243,10 +230,6 @@ int initialize(int argc, char** argv)
                 return EXIT_FAILURE;
             }
 
-            if((err = init_standalone_arg_check(argv[1])) == 1) {
-                return EXIT_FAILURE;
-            }
-
             if((err = env_info_populate(&env)) == 1) {
                 return EXIT_FAILURE;
             }
@@ -266,10 +249,6 @@ int initialize(int argc, char** argv)
         case TRASHCTL_ARG_CNT_THREE:
 
             if((err = init_validate_argument(argv[1])) == 1) {
-                return EXIT_FAILURE;
-            }
-
-            if((err = init_standalone_arg_check(argv[1])) == 1) {
                 return EXIT_FAILURE;
             }
 
