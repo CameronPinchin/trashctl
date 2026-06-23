@@ -1,0 +1,33 @@
+\doxysection{src/\+opt\+\_\+empty.c File Reference}
+\hypertarget{opt__empty_8c}{}\label{opt__empty_8c}\index{src/opt\_empty.c@{src/opt\_empty.c}}
+{\ttfamily \+\#include "{}../\+include/\+trashctl.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{opt__empty_8c_aa7a6f1d74af1c2149da35bb5ddd33c44}{trashctl\+\_\+empty}} (struct environment\+\_\+info \texorpdfstring{$\ast$}{*}env)
+\begin{DoxyCompactList}\small\item\em Exposed function called upon by initalize when a user inputs an \textquotesingle{}empty\textquotesingle{} call. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{opt__empty_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{opt__empty_8c_aa7a6f1d74af1c2149da35bb5ddd33c44}\index{opt\_empty.c@{opt\_empty.c}!trashctl\_empty@{trashctl\_empty}}
+\index{trashctl\_empty@{trashctl\_empty}!opt\_empty.c@{opt\_empty.c}}
+\doxysubsubsection{\texorpdfstring{trashctl\_empty()}{trashctl\_empty()}}
+{\footnotesize\ttfamily \label{opt__empty_8c_aa7a6f1d74af1c2149da35bb5ddd33c44} 
+int trashctl\+\_\+empty (\begin{DoxyParamCaption}\item[{struct environment\+\_\+info \texorpdfstring{$\ast$}{*}}]{env}{}\end{DoxyParamCaption})}
+
+
+
+Exposed function called upon by initalize when a user inputs an \textquotesingle{}empty\textquotesingle{} call. 
+
+Simply calls empty\+\_\+all\+\_\+files(env) and returns its output.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em env} & A pointer to a environment\+\_\+info struct. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure. 
+\end{DoxyReturn}

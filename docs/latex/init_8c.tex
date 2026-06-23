@@ -1,0 +1,97 @@
+\doxysection{src/\+init.c File Reference}
+\hypertarget{init_8c}{}\label{init_8c}\index{src/init.c@{src/init.c}}
+{\ttfamily \+\#include "{}../\+include/\+trashctl.\+h"{}}\newline
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0}{commands}} \{ \newline
+\doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0a59c51f88aeda3ea6351f01c9c70b9ac7}{CMD\+\_\+\+UNKNOWN}}
+, \doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0a38fa335acc4f2bc115476ffa52d2f804}{CMD\+\_\+\+PUT}}
+, \doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0a3e98c17356a41ea6840cd0241211d99d}{CMD\+\_\+\+LIST}}
+, \doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0ad1e7405a5d7a46ed45f361914d61e9f5}{CMD\+\_\+\+EMPTY}}
+, \newline
+\doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0a44f7b12c33496991aba2ce40f34e18be}{CMD\+\_\+\+DELETE}}
+, \doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0ad1d82e47f4061ce82ef2159e3a73d77b}{CMD\+\_\+\+RESTORE}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{init_8c_a18a80089fe72841079e7993f0e8291f0}{initialize}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
+\begin{DoxyCompactList}\small\item\em Parent function for \doxylink{init_8c}{init.\+c} that is called upon in \doxylink{trashctl_8c}{trashctl.\+c}. Used to initialize all aspects of trashctl. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{doc-enum-members}
+\Hypertarget{init_8c_doc-enum-members}
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{init_8c_a033f2c2ba101d1649bd36de7783782f0}\index{init.c@{init.c}!commands@{commands}}
+\index{commands@{commands}!init.c@{init.c}}
+\doxysubsubsection{\texorpdfstring{commands}{commands}}
+{\footnotesize\ttfamily \label{init_8c_a033f2c2ba101d1649bd36de7783782f0} 
+enum \doxymbox{\hyperlink{init_8c_a033f2c2ba101d1649bd36de7783782f0}{commands}}}
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CMD\_UNKNOWN@{CMD\_UNKNOWN}!init.c@{init.c}}
+\index{init.c@{init.c}!CMD\_UNKNOWN@{CMD\_UNKNOWN}}
+}\Hypertarget{init_8c_a033f2c2ba101d1649bd36de7783782f0a59c51f88aeda3ea6351f01c9c70b9ac7}\label{init_8c_a033f2c2ba101d1649bd36de7783782f0a59c51f88aeda3ea6351f01c9c70b9ac7} 
+CMD\+\_\+\+UNKNOWN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CMD\_PUT@{CMD\_PUT}!init.c@{init.c}}
+\index{init.c@{init.c}!CMD\_PUT@{CMD\_PUT}}
+}\Hypertarget{init_8c_a033f2c2ba101d1649bd36de7783782f0a38fa335acc4f2bc115476ffa52d2f804}\label{init_8c_a033f2c2ba101d1649bd36de7783782f0a38fa335acc4f2bc115476ffa52d2f804} 
+CMD\+\_\+\+PUT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CMD\_LIST@{CMD\_LIST}!init.c@{init.c}}
+\index{init.c@{init.c}!CMD\_LIST@{CMD\_LIST}}
+}\Hypertarget{init_8c_a033f2c2ba101d1649bd36de7783782f0a3e98c17356a41ea6840cd0241211d99d}\label{init_8c_a033f2c2ba101d1649bd36de7783782f0a3e98c17356a41ea6840cd0241211d99d} 
+CMD\+\_\+\+LIST&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CMD\_EMPTY@{CMD\_EMPTY}!init.c@{init.c}}
+\index{init.c@{init.c}!CMD\_EMPTY@{CMD\_EMPTY}}
+}\Hypertarget{init_8c_a033f2c2ba101d1649bd36de7783782f0ad1e7405a5d7a46ed45f361914d61e9f5}\label{init_8c_a033f2c2ba101d1649bd36de7783782f0ad1e7405a5d7a46ed45f361914d61e9f5} 
+CMD\+\_\+\+EMPTY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CMD\_DELETE@{CMD\_DELETE}!init.c@{init.c}}
+\index{init.c@{init.c}!CMD\_DELETE@{CMD\_DELETE}}
+}\Hypertarget{init_8c_a033f2c2ba101d1649bd36de7783782f0a44f7b12c33496991aba2ce40f34e18be}\label{init_8c_a033f2c2ba101d1649bd36de7783782f0a44f7b12c33496991aba2ce40f34e18be} 
+CMD\+\_\+\+DELETE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CMD\_RESTORE@{CMD\_RESTORE}!init.c@{init.c}}
+\index{init.c@{init.c}!CMD\_RESTORE@{CMD\_RESTORE}}
+}\Hypertarget{init_8c_a033f2c2ba101d1649bd36de7783782f0ad1d82e47f4061ce82ef2159e3a73d77b}\label{init_8c_a033f2c2ba101d1649bd36de7783782f0ad1d82e47f4061ce82ef2159e3a73d77b} 
+CMD\+\_\+\+RESTORE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\label{doc-func-members}
+\Hypertarget{init_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{init_8c_a18a80089fe72841079e7993f0e8291f0}\index{init.c@{init.c}!initialize@{initialize}}
+\index{initialize@{initialize}!init.c@{init.c}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{init_8c_a18a80089fe72841079e7993f0e8291f0} 
+int initialize (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv}{}\end{DoxyParamCaption})}
+
+
+
+Parent function for \doxylink{init_8c}{init.\+c} that is called upon in \doxylink{trashctl_8c}{trashctl.\+c}. Used to initialize all aspects of trashctl. 
+
+Initalizes all necessary components of trashctl and determines what action to take based on user-\/input.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em argc} & An integer representation of the number of commands passed to trashctl. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em argv} & An array of char pointers that contain each inputted argument. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure. 
+\end{DoxyReturn}

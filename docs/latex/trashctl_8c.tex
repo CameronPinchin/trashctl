@@ -1,0 +1,37 @@
+\doxysection{src/\+trashctl.c File Reference}
+\hypertarget{trashctl_8c}{}\label{trashctl_8c}\index{src/trashctl.c@{src/trashctl.c}}
+{\ttfamily \+\#include "{}../\+include/\+trashctl.\+h"{}}\newline
+{\ttfamily \+\#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \+\#include $<$string.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{trashctl_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}argv)
+\begin{DoxyCompactList}\small\item\em The main function for the program. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{trashctl_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{trashctl_8c_a3c04138a5bfe5d72780bb7e82a18e627}\index{trashctl.c@{trashctl.c}!main@{main}}
+\index{main@{main}!trashctl.c@{trashctl.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily \label{trashctl_8c_a3c04138a5bfe5d72780bb7e82a18e627} 
+int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{argv}{}\end{DoxyParamCaption})}
+
+
+
+The main function for the program. 
+
+Simply delegates work to \doxylink{init_8c_a18a80089fe72841079e7993f0e8291f0}{initialize()} by passing command line arguments.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em argc} & An integer representation of the number of arguments passed to trashctl. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em argv} & An array representation of the arguments passed to trashctl. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure. 
+\end{DoxyReturn}

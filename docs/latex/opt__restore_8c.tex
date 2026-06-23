@@ -1,0 +1,35 @@
+\doxysection{src/\+opt\+\_\+restore.c File Reference}
+\hypertarget{opt__restore_8c}{}\label{opt__restore_8c}\index{src/opt\_restore.c@{src/opt\_restore.c}}
+{\ttfamily \+\#include "{}../\+include/\+trashctl.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{opt__restore_8c_a7352e8a445893e47af4f5c0f00f28e7a}{trashctl\+\_\+restore}} (struct environment\+\_\+info \texorpdfstring{$\ast$}{*}env, char \texorpdfstring{$\ast$}{*}file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Exposed function called upon by initalize when a user inputs an \textquotesingle{}restore\textquotesingle{} call. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{opt__restore_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{opt__restore_8c_a7352e8a445893e47af4f5c0f00f28e7a}\index{opt\_restore.c@{opt\_restore.c}!trashctl\_restore@{trashctl\_restore}}
+\index{trashctl\_restore@{trashctl\_restore}!opt\_restore.c@{opt\_restore.c}}
+\doxysubsubsection{\texorpdfstring{trashctl\_restore()}{trashctl\_restore()}}
+{\footnotesize\ttfamily \label{opt__restore_8c_a7352e8a445893e47af4f5c0f00f28e7a} 
+int trashctl\+\_\+restore (\begin{DoxyParamCaption}\item[{struct environment\+\_\+info \texorpdfstring{$\ast$}{*}}]{env}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{file\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Exposed function called upon by initalize when a user inputs an \textquotesingle{}restore\textquotesingle{} call. 
+
+Simply calls restore\+\_\+file(env, file\+\_\+name) and returns its output.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em env} & A pointer to a environment\+\_\+info struct. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em file\+\_\+name} & A pointer to a user-\/inputted file\+\_\+name to be passed to init\+\_\+shell(). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure. 
+\end{DoxyReturn}

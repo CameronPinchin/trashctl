@@ -1,0 +1,35 @@
+\doxysection{src/\+opt\+\_\+put.c File Reference}
+\hypertarget{opt__put_8c}{}\label{opt__put_8c}\index{src/opt\_put.c@{src/opt\_put.c}}
+{\ttfamily \+\#include "{}../\+include/\+trashctl.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \doxymbox{\hyperlink{opt__put_8c_a215c09c32ef7dfde9bbc5959f866e4c7}{trashctl\+\_\+put}} (struct environment\+\_\+info \texorpdfstring{$\ast$}{*}env, char \texorpdfstring{$\ast$}{*}file\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Exposed function called upon by initalize when a user inputs an \textquotesingle{}put\textquotesingle{} call. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{opt__put_8c_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{opt__put_8c_a215c09c32ef7dfde9bbc5959f866e4c7}\index{opt\_put.c@{opt\_put.c}!trashctl\_put@{trashctl\_put}}
+\index{trashctl\_put@{trashctl\_put}!opt\_put.c@{opt\_put.c}}
+\doxysubsubsection{\texorpdfstring{trashctl\_put()}{trashctl\_put()}}
+{\footnotesize\ttfamily \label{opt__put_8c_a215c09c32ef7dfde9bbc5959f866e4c7} 
+int trashctl\+\_\+put (\begin{DoxyParamCaption}\item[{struct environment\+\_\+info \texorpdfstring{$\ast$}{*}}]{env}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{file\+\_\+name}{}\end{DoxyParamCaption})}
+
+
+
+Exposed function called upon by initalize when a user inputs an \textquotesingle{}put\textquotesingle{} call. 
+
+Simply calls put\+\_\+file(env, file\+\_\+name) and returns its output.
+
+
+\begin{DoxyParams}[1]{Parameters}
+\doxymbox{\texttt{in}}  & {\em env} & A pointer to a environment\+\_\+info struct. \\
+\hline
+\doxymbox{\texttt{in}}  & {\em file\+\_\+name} & A pointer to a user-\/inputted file\+\_\+name to be passed to init\+\_\+shell(). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure. 
+\end{DoxyReturn}
