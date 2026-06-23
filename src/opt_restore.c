@@ -57,8 +57,8 @@ static int restore_file(struct environment_info* env, char* file_name)
     cwd_len = strlen(cwd);
     cwd[cwd_len] = '/';
 
-    char restore_file_command[256] = "mv ";
-    char restore_file_path[512] = {};
+    char restore_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "mv ";
+    char restore_file_path[TRASHCTL_SUBPATH_LEN] = {};
 
     strlcpy(restore_file_path, env->trash_dir, sizeof(restore_file_path));
     restore_file_path_len = strlen(restore_file_path);

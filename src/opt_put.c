@@ -56,8 +56,8 @@ static int put_file(struct environment_info* env, char* file_name)
     getcwd(cwd, sizeof(cwd));
     cwd_length = strlen(cwd);
 
-    char put_file_command[256] = "mv ";
-    char put_file_path[128] = {};
+    char put_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "mv ";
+    char put_file_path[TRASHCTL_SUBPATH_LEN] = {};
 
     strlcpy(put_file_path, env->trash_dir, sizeof(put_file_path));
 

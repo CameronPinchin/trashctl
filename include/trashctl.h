@@ -13,6 +13,11 @@
 #ifndef TRASHCTL_H
 #define TRASHCTL_H
 
+#define TRASHCTL_VER                0.10
+
+#define TRASHCTL_SUBSHELL_CMD_LEN   256
+#define TRASHCTL_SUBPATH_LEN        128
+
 /* TEST: MACROS*/
 #define TRASHCTL_LS_PATH            "/bin/ls"
 #define TRASHCTL_RM_PATH            "/bin/rm"
@@ -42,11 +47,6 @@
 #define TRASHCTL_ARG_RESTORE        "restore"
 #define TRASHCTL_ARG_EMPTY          "empty"
 #define TRASHCTL_ARG_DELETE         "delete"
-
-//#define CMD_PUT                     1
-//#define CMD_DELETE                  2
-//#define CMD_EMPTY                   3
-//#define CMD_LIST                    4
 
 /* STRUCT DEFINITIONS */
 struct environment_info {

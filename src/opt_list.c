@@ -47,7 +47,7 @@ static int trashctl_list_operation(struct environment_info *env)
     int err;
     errno = 0;
 
-    char list_files_command[128] = "ls -l ";
+    char list_files_command[TRASHCTL_SUBSHELL_CMD_LEN] = "ls -l ";
     char *cmd_ptr = list_files_command;
 
     strlcat(list_files_command, env->trash_dir, sizeof(list_files_command));
