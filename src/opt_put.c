@@ -52,9 +52,9 @@ static int put_file(struct environment_info* env, char* file_name)
     int err, cwd_length;
     errno = 0;
 
-    char cwd[1024] = {};
+    char cwd[TRASHCTL_SUBSHELL_CMD_LEN] = {0};
     getcwd(cwd, sizeof(cwd));
-    cwd_length = strlen(cwd);
+    cwd_length = strnlen(cwd, TRASHCTL_SUBSHELL_CMD_LEN);
 
     char put_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "mv ";
     char put_file_path[TRASHCTL_SUBPATH_LEN] = {0};
@@ -64,11 +64,11 @@ static int put_file(struct environment_info* env, char* file_name)
     char *cmd_ptr = put_file_command;
     cwd[cwd_length] = '/';
     strlcat(cwd, file_name, sizeof(cwd));
-    cwd_length = strlen(cwd);
+    cwd_length = strnlen(cwd, TRASHCTL_SUBPATH_LEN);
     cwd[cwd_length] = ' ';
 
-    strcat(cwd, put_file_path);
-    strcat(put_file_command, cwd);
+    strlcat(cwd, put_file_path, sizeof(cwd));
+    strlcat(put_file_command, cwd, sizeof(put_file_command));
 
     if((err = init_shell(env, cmd_ptr)) == 1){
         fprintf(stderr, "[ERROR] Fork failed for put command.\n");

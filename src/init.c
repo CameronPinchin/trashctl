@@ -112,7 +112,7 @@ static int trash_dir_access_check(struct environment_info* env)
     errno = 0;
 
     if((err = access(env->trash_dir, F_OK)) == -1) {
-        fprintf(stderr, "[ERROR]: %s (must create trash_dir)\n", strerror(errno));
+        fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
         return 1;
     }
 

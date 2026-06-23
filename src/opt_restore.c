@@ -54,19 +54,19 @@ static int restore_file(struct environment_info* env, char* file_name)
 
     char cwd[256] = {};
     getcwd(cwd, sizeof(cwd));
-    cwd_len = strlen(cwd);
+    cwd_len = strnlen(cwd, TRASHCTL_SUBSHELL_CMD_LEN);
     cwd[cwd_len] = '/';
 
     char restore_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "mv ";
     char restore_file_path[TRASHCTL_SUBPATH_LEN] = {0};
 
     strlcpy(restore_file_path, env->trash_dir, sizeof(restore_file_path));
-    restore_file_path_len = strlen(restore_file_path);
+    restore_file_path_len = strnlen(restore_file_path, TRASHCTL_SUBPATH_LEN);
 
     char *cmd_ptr = restore_file_command;
 
     strlcat(restore_file_path, file_name, sizeof(restore_file));
-    restore_file_path_len = strlen(restore_file_path);
+    restore_file_path_len = strnlen(restore_file_path, TRASHCTL_SUBPATH_LEN);
     restore_file_path[restore_file_path_len] = ' ';
 
     strlcat(restore_file_path, cwd, sizeof(restore_file_path));
