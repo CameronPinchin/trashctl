@@ -15,7 +15,7 @@ $(shell mkdir -p ../$(TARGET_DIR))
 
 .PHONY: clean
 
-all: $(TARGET)
+all: $(TARGET) $(TARGET_DEBUG)
 
 $(TARGET):
 	$(CC) $(CFLAGS) $(SRCS) -o ../releases/$(TARGET)

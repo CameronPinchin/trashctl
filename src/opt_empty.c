@@ -2,43 +2,6 @@
 /* This will cover the empty command line option for trashctl */
 
 /**
- * @brief Initializes a subshell using the fork and exec flow.
- *
- * Starts a subshell if the fork is successful and runs a user-inputted command.
- *
- * @param[in] env A pointer to a environment_info struct.
- * @param[in] shell_command A pointer to a complete shell command to be run in the subshell.
- * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
- */
-static int init_shell(struct environment_info* env, char* shell_command)
-{
-    int err, status, fd;
-    errno = 0;
-    fd = open(TRASHCTL_DEV_NULL_PATH, O_WRONLY);
-    dup2(fd, STDOUT_FILENO);
-    dup2(fd, STDERR_FILENO);
-
-    pid_t pid_sh = fork();
-
-    if(pid_sh < 0){
-        return 1;
-    } else if(pid_sh == 0){
-        /* child process */
-        if((err = execl(TRASHCTL_SH_PATH, "sh", "-c", shell_command, NULL)) == -1){
-            return 1;
-        }
-    } else {
-        if((err = waitpid(pid_sh, &status, 0)) == -1){
-            return 1;
-        }
-    }
-
-    close(fd);
-
-    return 0;
-}
-
-/**
  * @brief Internal function called by trashctl_empty().
  *
  * Removes all files based on the users trash directory. This function is internal and called upon by trashctl_empty().

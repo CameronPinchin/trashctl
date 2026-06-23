@@ -65,5 +65,6 @@ int trashctl_empty(struct environment_info* env);
 int trashctl_delete(struct environment_info* env, char* file_path);
 int trashctl_put(struct environment_info* env, char* file_path);
 int trashctl_restore(struct environment_info* env, char* file_path);
+int init_shell(struct environment_info* env, char* shell_command);
 
 #endif
