@@ -131,7 +131,7 @@ static int trash_dir_create_dir_p(struct environment_info* env)
 {
     int err, i;
     mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-    char working_directory[256] = {}; /* opts: env->home_dir (fix), /home/cameron */
+    char working_directory[TRASHCTL_SUBSHELL_CMD_LEN] = { 0 };
     strlcpy(working_directory, env->home_dir, sizeof(working_directory));
 
     size_t capacity = sizeof(working_directory);
@@ -237,7 +237,7 @@ int initialize(int argc, char** argv)
             }
 
             if((err = parse_command(&env, argv[1])) == 1){
-                fprintf(stderr, "[ERROR] Failed on argument: %s. \n", argv[1]);
+                fprintf(stderr, "Sorry! We couldn't map argument: [%s] to any of our commands. Check your input and try again.\n", argv[1]);
                 return EXIT_FAILURE;
             }
 
@@ -259,7 +259,7 @@ int initialize(int argc, char** argv)
             }
 
             if((err = parse_command_with_file(&env, argv[1], argv[2])) == 1){
-                fprintf(stderr, "[ERROR] Failed on arguments: %s, %s. \n", argv[1], argv[2]);
+                fprintf(stderr, "Sorry! We couldn't map arguments: [%s, %s] to any of our commands. Check your input and try again.\n", argv[1], argv[2]);
                 return EXIT_FAILURE;
             }
 
