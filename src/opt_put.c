@@ -4,7 +4,7 @@
 
 static int put_create_info_entry(struct environment_info* env, const char* original_file_path, char* file_name)
 {
-    mode_t info_file_perms = S_IRWXU | S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
+    mode_t info_file_perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 
     int err, fd, formatted_length;
 
@@ -57,7 +57,6 @@ static int put_file(struct environment_info* env, char* file_name)
     const char* new_file_path = tmp_new_file_path;
     strlcpy(tmp_new_file_path, env->trash_dir, TRASHCTL_PATH_MAX);
     strlcat(tmp_new_file_path, file_name, TRASHCTL_PATH_MAX);
-    printf("[DBG] new file path: %s\n", tmp_new_file_path);
 
     // I do not like this at all, but it works and we are sticking with it for now.
     char tmp[TRASHCTL_PATH_MAX] = {0};
