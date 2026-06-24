@@ -1,5 +1,43 @@
 #include "../include/trashctl.h"
+#include <time.h>
 /* This covers the case of moving files to your trash directory */
+
+static int put_create_info_entry(struct environment_info* env, const char* original_file_path, char* file_name)
+{
+    mode_t info_file_perms = S_IRWXU | S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
+
+    int err, fd, formatted_length;
+
+    char tmp[TRASHCTL_PATH_MAX] = { 0 };
+    char formatted_data[TRASHCTL_BUF_MAX] = {0};
+    char timestamp_str[32];
+    const char* file_name_with_suffix = tmp;
+    time_t now = time(NULL);
+    struct tm *local = localtime(&now);
+
+    strlcpy(tmp, env->info_dir, TRASHCTL_PATH_MAX);
+    strlcat(tmp, file_name, TRASHCTL_PATH_MAX);
+    strlcat(tmp, ".trashinfo", TRASHCTL_PATH_MAX);
+
+    if((fd = open(file_name_with_suffix, O_WRONLY | O_CREAT | O_TRUNC, info_file_perms )) < 0){
+        fprintf(stderr, "[ERROR] Failed to open file.\n");
+        return 1;
+    }
+
+    strftime(timestamp_str, sizeof(timestamp_str), "%Y-%m-%dT%H:%M:%S", local); //2026-05-04T11:08:18
+
+    formatted_length = snprintf(formatted_data, TRASHCTL_BUF_MAX,"[Trash Info]\nPath=%s\nDeletionDate=%s\n", original_file_path, timestamp_str);
+
+    ssize_t bytes_written = write(fd, formatted_data, formatted_length);
+    if(bytes_written < 0){
+        fprintf(stderr, "[ERROR] %s\n", strerror(errno));
+        close(fd);
+        return 1;
+    }
+
+    close(fd);
+    return 0;
+}
 
 /**
  * @brief Internal function called by trashctl_put().
@@ -12,29 +50,33 @@
  */
 static int put_file(struct environment_info* env, char* file_name)
 {
-    int err, cwd_length;
+    int err, tmp_length;
     errno = 0;
 
-    char cwd[TRASHCTL_SUBSHELL_CMD_LEN] = {0};
-    getcwd(cwd, sizeof(cwd));
-    cwd_length = strnlen(cwd, TRASHCTL_SUBSHELL_CMD_LEN);
+    char tmp_new_file_path[TRASHCTL_PATH_MAX] = { 0 };
+    const char* new_file_path = tmp_new_file_path;
+    strlcpy(tmp_new_file_path, env->trash_dir, TRASHCTL_PATH_MAX);
+    strlcat(tmp_new_file_path, file_name, TRASHCTL_PATH_MAX);
+    printf("[DBG] new file path: %s\n", tmp_new_file_path);
 
-    char put_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "mv ";
-    char put_file_path[TRASHCTL_SUBPATH_LEN] = {0};
+    // I do not like this at all, but it works and we are sticking with it for now.
+    char tmp[TRASHCTL_PATH_MAX] = {0};
+    const char* original_file_path = tmp;
+    getcwd(tmp, sizeof(tmp));
+    tmp_length = strnlen(tmp, TRASHCTL_PATH_MAX);
+    tmp[tmp_length] = '/';
+    tmp_length = strnlen(tmp, TRASHCTL_PATH_MAX); // should be the path of file_name
+    strlcat(tmp, file_name, TRASHCTL_PATH_MAX);
 
-    strlcpy(put_file_path, env->trash_dir, sizeof(put_file_path));
+    // create .trashinfo entry
+    if((err = put_create_info_entry(env, original_file_path, file_name)) == 1){
+        fprintf(stderr, "[ERROR] Failed to create .trashinfo file entry.\n");
+        return 1;
+    }
 
-    char *cmd_ptr = put_file_command;
-    cwd[cwd_length] = '/';
-    strlcat(cwd, file_name, sizeof(cwd));
-    cwd_length = strnlen(cwd, TRASHCTL_SUBPATH_LEN);
-    cwd[cwd_length] = ' ';
-
-    strlcat(cwd, put_file_path, sizeof(cwd));
-    strlcat(put_file_command, cwd, sizeof(put_file_command));
-
-    if((err = init_shell(env, cmd_ptr)) == 1){
-        fprintf(stderr, "[ERROR] Fork failed for put command.\n");
+    // move files
+    if((err = rename(original_file_path, new_file_path) != 0)){
+        fprintf(stderr, "[ERROR] Failed to rename file.\n");
         return 1;
     }
 

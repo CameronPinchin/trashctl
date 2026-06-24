@@ -4,10 +4,6 @@ static const char* valid_arguments[] = {TRASHCTL_ARG_PUT, TRASHCTL_ARG_LIST, \
     TRASHCTL_ARG_RESTORE, TRASHCTL_ARG_EMPTY, TRASHCTL_ARG_DELETE
 };
 
-static const char* parent_directories[] = {TRASHCTL_PARENT_DIR_LOCAL, TRASHCTL_PARENT_DIR_SHARE, \
-    TRASHCTL_PARENT_DIR_TRASH, TRASHCTL_PARENT_DIR_FILES
-};
-
 /**
  * @brief Initializes a subshell using the fork and exec flow.
  *
@@ -127,8 +123,12 @@ static int env_info_populate(struct environment_info* env)
         fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
         return 1;
     }
-
     env->trash_dir = env->trash_dir_mut;
+
+    strlcpy(env->info_dir_mut, env->home_dir, TRASHCTL_PATH_MAX); // copy home directory into empty char array
+    strlcat(env->info_dir_mut, TRASHCTL_INFO_DIR, TRASHCTL_PATH_MAX);
+
+    env->info_dir = env->info_dir_mut;
 
     return 0;
 }
@@ -141,10 +141,9 @@ static int env_info_populate(struct environment_info* env)
  * @param[in] env A pointer to a environment_info struct.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
-static int trash_dir_access_check(struct environment_info* env)
+static int init_check_for_trash_dir(struct environment_info* env)
 {
     int err;
-    errno = 0;
 
     if((err = access(env->trash_dir, F_OK)) == -1) {
         fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
@@ -154,40 +153,39 @@ static int trash_dir_access_check(struct environment_info* env)
     return 0;
 }
 
-/**
- * @brief Iteratively creates directories for the users trash directory if trash_dir_access_check() returns 1.
- *
- * Takes in a pointer to a environment_info struct and creates missing directories.
- *
- * @param[in] env A pointer to a environment_info struct instantiated in the initialize function.
- * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
- */
-static int trash_dir_create_dir_p(struct environment_info* env)
+static int init_check_for_info_dir(struct environment_info* env)
 {
-    int err, i;
-    mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
-    char working_directory[TRASHCTL_SUBSHELL_CMD_LEN] = { 0 };
-    strlcpy(working_directory, env->home_dir, sizeof(working_directory));
+    int err;
 
-    size_t capacity = sizeof(working_directory);
-    size_t offset = strnlen(working_directory, TRASHCTL_SUBSHELL_CMD_LEN);
-    size_t remaining = capacity;
-    int written;
-    for(i = 0; i < 4; ++i) {
-        remaining = capacity - offset;
-
-        if((written = snprintf(working_directory + offset, remaining, "/%s", parent_directories[i])) == -1){
-            fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
-            return 1;
-        }
-        offset += written;
-
-        const char *path = working_directory;
-        if((err = mkdir(path, dir_mode)) == -1){
-            continue;
-        }
+    if((err = access(env->info_dir, F_OK)) == -1) {
+        fprintf(stderr, "[ERROR]: %s\n", strerror(errno));
+        return 1;
     }
     return 0;
+}
+
+static void mkdir_p(const char* dir_path)
+{
+    mode_t dir_mode = S_IFDIR | S_IRUSR | S_IWUSR | S_IXUSR | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+    char tmp[TRASHCTL_PATH_MAX];
+    char* p;
+    size_t len;
+
+    snprintf(tmp, sizeof(tmp), "%s", dir_path);
+    len = strnlen(tmp, TRASHCTL_PATH_MAX);
+
+    if(tmp[len - 1] == '/'){
+        tmp[len - 1] = 0;
+    }
+
+    for(p = tmp + 1; *p; p++){
+        if(*p == '/'){
+            *p = 0;
+            mkdir(tmp, dir_mode);
+            *p = '/';
+        }
+    }
+    mkdir(tmp, dir_mode);
 }
 
 /**
@@ -265,10 +263,12 @@ int initialize(int argc, char** argv)
                 return EXIT_FAILURE;
             }
 
-            if((err = trash_dir_access_check(&env)) == 1) {
-                if((err = trash_dir_create_dir_p(&env)) == 1) {
-                    return EXIT_FAILURE;
-                }
+            if((err = init_check_for_trash_dir(&env)) == 1) {
+                mkdir_p(env.home_dir);
+            }
+
+            if((err = init_check_for_info_dir(&env)) == 1){
+                mkdir_p(env.info_dir);
             }
 
             if((err = parse_command(&env, argv[1])) == 1){
@@ -287,10 +287,12 @@ int initialize(int argc, char** argv)
                 return EXIT_FAILURE;
             }
 
-            if((err = trash_dir_access_check(&env)) == 1) {
-                if((err = trash_dir_create_dir_p(&env)) == 1) {
-                    return EXIT_FAILURE;
-                }
+            if((err = init_check_for_trash_dir(&env)) == 1) {
+                mkdir_p(env.home_dir);
+            }
+            printf("[DBG] Info directory: %s\n", env.info_dir);
+            if((err = init_check_for_info_dir(&env)) == 1){
+                mkdir_p(env.info_dir);
             }
 
             if((err = parse_command_with_file(&env, argv[1], argv[2])) == 1){

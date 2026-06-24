@@ -1,4 +1,5 @@
 #include "../include/trashctl.h"
+#include <dirent.h>
 /* This will cover the list command line option for trashctl */
 
 /**
@@ -11,19 +12,24 @@
  */
 static int trashctl_list_operation(struct environment_info *env)
 {
-    int err;
     errno = 0;
 
-    char list_files_command[TRASHCTL_SUBSHELL_CMD_LEN] = "ls -l ";
-    char *cmd_ptr = list_files_command;
+    DIR *dir = opendir(env->trash_dir);
+    struct dirent *dir_entry;
 
-    strlcat(list_files_command, env->trash_dir, sizeof(list_files_command));
-
-    if((err = init_shell(env, cmd_ptr) == 1)){
-        fprintf(stderr, "[ERROR] Fork failed for list operation.\n");
+    if(dir == NULL){
+        fprintf(stderr, "[ERROR] %s\n", strerror(errno));
         return 1;
     }
 
+    while((dir_entry = readdir(dir)) != NULL){
+        if((strcmp(dir_entry->d_name, "..") == 0) || strcmp(dir_entry->d_name, ".") == 0){
+            continue;
+        }
+        printf("%s\n", dir_entry->d_name);
+    }
+
+    closedir(dir);
     return 0;
 }
 

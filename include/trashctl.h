@@ -17,6 +17,8 @@
 
 #define TRASHCTL_SUBSHELL_CMD_LEN   256
 #define TRASHCTL_SUBPATH_LEN        128
+#define TRASHCTL_PATH_MAX           256
+#define TRASHCTL_BUF_MAX            512
 
 /* TEST: MACROS*/
 #define TRASHCTL_LS_PATH            "/bin/ls"
@@ -27,6 +29,7 @@
 
 /* INIT: DIRECTORY MACROS */
 #define TRASHCTL_TRASH_DIR          "/.local/share/Trash/files/"
+#define TRASHCTL_INFO_DIR           "/.local/share/Trash/info/"
 #define TRASHCTL_TRASH_DIR_LEN      ((size_t)27)
 #define TRASHCTL_MAX_HOME_DIR_LEN   ((size_t)40) /* Usernames can be at most 32 characters, and the home prefix is 6 */
 
@@ -35,6 +38,7 @@
 #define TRASHCTL_PARENT_DIR_SHARE   "share"
 #define TRASHCTL_PARENT_DIR_TRASH   "Trash"
 #define TRASHCTL_PARENT_DIR_FILES   "files"
+#define TRASHCTL_PARENT_DIR_INFO    "info"
 
 /* ARGUMENT: MACROS */
 #define TRASHCTL_ARG_CNT_ONE        1
@@ -51,11 +55,13 @@
 
 /* STRUCT DEFINITIONS */
 struct environment_info {
-    const char* uname;                /* Identifier for the username                        */
-    const char* home_dir;             /* Identifier for the home directory of the user      */
-    const char* trash_dir;            /* Identifier for the trash directory of the user     */
-    char trash_dir_mut[256];          /* For the concatenation of home_dir and trash_dir    */
-    size_t trash_dir_len;             /* To store the length of the pathname for trash_dir  */
+    const char* uname;                              /* Identifier for the username                        */
+    const char* home_dir;                           /* Identifier for the home directory of the user      */
+    const char* trash_dir;                          /* Identifier for the trash directory of the user     */
+    const char* info_dir;
+    char trash_dir_mut[TRASHCTL_PATH_MAX];  /* For the concatenation of home_dir and trash_dir    */
+    char info_dir_mut[TRASHCTL_PATH_MAX];   /* For the concatenation of home_dir and trash_dir    */
+    size_t trash_dir_len;                           /* To store the length of the pathname for trash_dir  */
 };
 
 /* FORWARD DECLARATIONS */
