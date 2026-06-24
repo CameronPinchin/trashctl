@@ -6,7 +6,7 @@ static int put_create_info_entry(struct environment_info* env, const char* origi
 {
     mode_t info_file_perms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 
-    int err, fd, formatted_length;
+    int fd, formatted_length;
 
     char tmp[TRASHCTL_PATH_MAX] = { 0 };
     char formatted_data[TRASHCTL_BUF_MAX] = {0};

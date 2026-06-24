@@ -19,6 +19,7 @@
 #define TRASHCTL_SUBPATH_LEN        128
 #define TRASHCTL_PATH_MAX           256
 #define TRASHCTL_BUF_MAX            512
+#define TRASHCTL_LINE_MAX           1024
 
 /* TEST: MACROS*/
 #define TRASHCTL_LS_PATH            "/bin/ls"

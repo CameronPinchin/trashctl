@@ -12,32 +12,62 @@
  */
 static int restore_file(struct environment_info* env, char* file_name)
 {
-    int err, restore_file_path_len, cwd_len;
-    errno = 0;
+    /* THIS NEEDS TO BE SPLIT INTO MULTIPLE FUNCTIONS, MAYBE TWO OR THREE */
 
-    char cwd[256] = {};
-    getcwd(cwd, sizeof(cwd));
-    cwd_len = strnlen(cwd, TRASHCTL_SUBSHELL_CMD_LEN);
-    cwd[cwd_len] = '/';
 
-    char restore_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "mv ";
-    char restore_file_path[TRASHCTL_SUBPATH_LEN] = {0};
+    int fd, err;
+    char trash_file_tmp[TRASHCTL_PATH_MAX] = { 0 };
+    char info_file_tmp[TRASHCTL_PATH_MAX] = { 0 };
+    char original_file_tmp[TRASHCTL_PATH_MAX] = { 0 };
+    const char* info_file = info_file_tmp;
+    const char* org_file = original_file_tmp;
+    const char* trash_file = trash_file_tmp;
 
-    strlcpy(restore_file_path, env->trash_dir, sizeof(restore_file_path));
-    restore_file_path_len = strnlen(restore_file_path, TRASHCTL_SUBPATH_LEN);
+    strlcpy(info_file_tmp, env->info_dir, TRASHCTL_PATH_MAX);
+    strlcat(info_file_tmp, file_name, TRASHCTL_PATH_MAX);
+    strlcat(info_file_tmp, ".trashinfo", TRASHCTL_PATH_MAX);
 
-    char *cmd_ptr = restore_file_command;
+    strlcpy(trash_file_tmp, env->trash_dir, TRASHCTL_PATH_MAX);
+    strlcat(trash_file_tmp, file_name, TRASHCTL_PATH_MAX);
 
-    strlcat(restore_file_path, file_name, sizeof(restore_file));
-    restore_file_path_len = strnlen(restore_file_path, TRASHCTL_SUBPATH_LEN);
-    restore_file_path[restore_file_path_len] = ' ';
 
-    strlcat(restore_file_path, cwd, sizeof(restore_file_path));
-    strlcat(restore_file_command, restore_file_path, sizeof(restore_file_command));
-
-    if((err = init_shell(env, cmd_ptr)) == 1){
+    if((fd = open(info_file, O_RDONLY)) < 0){
+        fprintf(stderr, "[ERROR] %s\n", strerror(errno));
         return 1;
     }
+
+    FILE *filep = fdopen(fd, "r");
+    if(filep == NULL){
+        fprintf(stderr, "[ERROR] %s\n", strerror(errno));
+        close(fd);
+        return 1;
+    }
+
+    char line[TRASHCTL_LINE_MAX] = { 0 };
+    const char* prefix = "Path=";
+    size_t prefix_length = strlen(prefix);
+
+    while(fgets(line, TRASHCTL_LINE_MAX, filep) != NULL){
+        if(strncmp(line, prefix, prefix_length) == 0){
+            strncpy(original_file_tmp, line + prefix_length, TRASHCTL_PATH_MAX);
+            size_t len = strlen(original_file_tmp);
+            original_file_tmp[len - 1] = '\0';
+            break;
+        }
+    }
+
+    if((err = rename(trash_file, org_file)) != 0){
+        fprintf(stderr, "[ERROR] Failed to move file.\n");
+        return 1;
+    }
+
+    if((err = unlink(info_file)) != 0){
+        fprintf(stderr, "[ERROR] Failed to delete trashinfo file.\n");
+        return 1;
+    }
+
+    fclose(filep);
+    close(fd);
 
     return 0;
 }
