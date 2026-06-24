@@ -19,6 +19,7 @@ static int empty_all_files(struct environment_info* env)
 
     if(dirp == NULL){
         fprintf(stderr, "[ERROR] %s\n", strerror(errno));
+        closedir(dirp);
         return 1;
     }
     /* if a Trashed file is deleted, its corresponding info file must also be deleted. */
@@ -42,6 +43,8 @@ static int empty_all_files(struct environment_info* env)
         unlink(trash_path);
         unlink(info_path);
     }
+
+    closedir(dirp);
 
     return 0;
 }

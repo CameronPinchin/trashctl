@@ -1,4 +1,6 @@
 #include "../include/trashctl.h"
+#include <dirent.h>
+
 /* This file covers the trashctl delete option. Logic currently housed within the opt_empty.c file, but is to be moved here. */
 
 /**
@@ -12,22 +14,43 @@
  */
 static int delete_file(struct environment_info* env, char* file_name)
 {
-    int err;
     errno = 0;
 
-    char delete_file_command[TRASHCTL_SUBSHELL_CMD_LEN] = "rm ";
-    char usr_target_file_path[TRASHCTL_SUBPATH_LEN] = {0};
+    DIR* dirp = opendir(env->trash_dir);
+    struct dirent* dir_entry;
 
-    char *cmd_ptr = delete_file_command;
-
-    strlcpy(usr_target_file_path, env->trash_dir, sizeof(usr_target_file_path));
-    strlcat(usr_target_file_path, file_name, sizeof(usr_target_file_path));
-    strlcat(delete_file_command, usr_target_file_path, sizeof(delete_file_command));
-
-    if((err = init_shell(env, cmd_ptr) == 1)){
-        fprintf(stderr, "[ERROR] Failed to open shell for file deletion.\n");
+    if(dirp == NULL){
+        fprintf(stderr, "[ERROR] %s\n", strerror(errno));
         return 1;
     }
+
+    while((dir_entry = readdir(dirp)) != NULL){
+        if((strcmp(dir_entry->d_name, "..") == 0) || strcmp(dir_entry->d_name, ".") == 0){
+            continue;
+        }
+
+        if((strcmp(dir_entry->d_name, file_name)) == 0){
+
+            char tmp_trash[TRASHCTL_PATH_MAX] = { 0 };
+            char tmp_info[TRASHCTL_PATH_MAX] = { 0 };
+
+            strlcpy(tmp_trash, env->trash_dir, TRASHCTL_PATH_MAX);
+            strlcat(tmp_trash, dir_entry->d_name, TRASHCTL_PATH_MAX);
+            strlcpy(tmp_info, env->info_dir, TRASHCTL_PATH_MAX);
+            strlcat(tmp_info, dir_entry->d_name, TRASHCTL_PATH_MAX);
+            strlcat(tmp_info, ".trashinfo", TRASHCTL_PATH_MAX);
+
+            const char* trash_path = tmp_trash;
+            const char* info_path = tmp_info;
+
+            unlink(trash_path);
+            unlink(info_path);
+
+            break;
+        }
+    }
+
+    closedir(dirp);
 
     return 0;
 }
