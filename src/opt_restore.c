@@ -1,6 +1,7 @@
 #include "../include/trashctl.h"
 /* This covers the case of moving files from your trash directory */
 
+
 /**
  * @brief Internal function called by trashctl_restore().
  *
@@ -23,13 +24,13 @@ static int restore_file(struct environment_info* env, char* file_name)
     const char* org_file = original_file_tmp;
     const char* trash_file = trash_file_tmp;
 
-    strlcpy(info_file_tmp, env->info_dir, TRASHCTL_PATH_MAX);
-    strlcat(info_file_tmp, file_name, TRASHCTL_PATH_MAX);
-    strlcat(info_file_tmp, ".trashinfo", TRASHCTL_PATH_MAX);
-
-    strlcpy(trash_file_tmp, env->trash_dir, TRASHCTL_PATH_MAX);
-    strlcat(trash_file_tmp, file_name, TRASHCTL_PATH_MAX);
-
+    // strlcpy(info_file_tmp, env->info_dir, TRASHCTL_PATH_MAX);
+    // strlcat(info_file_tmp, file_name, TRASHCTL_PATH_MAX);
+    // strlcat(info_file_tmp, ".trashinfo", TRASHCTL_PATH_MAX);
+    construct_path(info_file_tmp, env->info_dir, file_name, ".trashinfo", TRASHCTL_PATH_MAX);
+    //strlcpy(trash_file_tmp, env->trash_dir, TRASHCTL_PATH_MAX);
+    //strlcat(trash_file_tmp, file_name, TRASHCTL_PATH_MAX);
+    construct_path(trash_file_tmp, env->trash_dir, file_name, NULL, TRASHCTL_PATH_MAX);
 
     if((fd = open(info_file, O_RDONLY)) < 0){
         fprintf(stderr, "[ERROR] %s\n", strerror(errno));

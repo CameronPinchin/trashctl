@@ -30,15 +30,12 @@ static int empty_all_files(struct environment_info* env)
 
         char tmp_trash[TRASHCTL_PATH_MAX] = { 0 };
         char tmp_info[TRASHCTL_PATH_MAX] = { 0 };
-
-        strlcpy(tmp_trash, env->trash_dir, TRASHCTL_PATH_MAX);
-        strlcat(tmp_trash, dir_entry->d_name, TRASHCTL_PATH_MAX);
-        strlcpy(tmp_info, env->info_dir, TRASHCTL_PATH_MAX);
-        strlcat(tmp_info, dir_entry->d_name, TRASHCTL_PATH_MAX);
-        strlcat(tmp_info, ".trashinfo", TRASHCTL_PATH_MAX);
-
         const char* trash_path = tmp_trash;
         const char* info_path = tmp_info;
+
+        construct_path(tmp_trash, env->trash_dir, dir_entry->d_name, NULL,TRASHCTL_PATH_MAX);
+        construct_path(tmp_info, env->info_dir, dir_entry->d_name, ".trashinfo", TRASHCTL_PATH_MAX);
+
 
         unlink(trash_path);
         unlink(info_path);

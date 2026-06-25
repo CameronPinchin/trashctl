@@ -13,7 +13,7 @@
 #ifndef TRASHCTL_H
 #define TRASHCTL_H
 
-#define TRASHCTL_VER                0.2.1 /* MAJOR, MINOR (new stuff), PATCH (bugs,cleanup)*/
+#define TRASHCTL_VER                0.2.2 /* MAJOR, MINOR (new stuff), PATCH (bugs,cleanup)*/
 
 #define TRASHCTL_PATH_MAX           256
 #define TRASHCTL_BUF_MAX            512
@@ -52,6 +52,13 @@
 #define TRASHCTL_ARG_EMPTY          "empty"
 #define TRASHCTL_ARG_DELETE         "delete"
 
+
+struct trashctl_env {
+    char p_trash_dir[TRASHCTL_PATH_MAX];
+    char p_info_dir[TRASHCTL_PATH_MAX];
+    char p_home_dir[TRASHCTL_PATH_MAX];
+};
+
 /* STRUCT DEFINITIONS */
 struct environment_info {
     const char* uname;                              /* Identifier for the username                        */
@@ -61,6 +68,7 @@ struct environment_info {
     char trash_dir_mut[TRASHCTL_PATH_MAX];          // this is awkward and should be either changed or removed
     char info_dir_mut[TRASHCTL_PATH_MAX];
     size_t trash_dir_len;                           /* To store the length of the pathname for trash_dir  */
+    struct trashctl_env trashenv;
 };
 
 /* Consider:
@@ -80,5 +88,6 @@ int trashctl_delete(struct environment_info* env, char* file_path);
 int trashctl_put(struct environment_info* env, char* file_path);
 int trashctl_restore(struct environment_info* env, char* file_path);
 int init_shell(struct environment_info* env, char* shell_command);
+void construct_path(char *buf, const char* trashdir, const char* file, const char* opt_srcprefix, int size);
 
 #endif

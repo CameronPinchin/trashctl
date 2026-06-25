@@ -90,8 +90,12 @@ static int env_info_populate(struct environment_info* env)
     }
     env->trash_dir = env->trash_dir_mut;
 
-    strlcpy(env->info_dir_mut, env->home_dir, TRASHCTL_PATH_MAX); // copy home directory into empty char array
+    strlcpy(env->info_dir_mut, env->home_dir, TRASHCTL_PATH_MAX);
     strlcat(env->info_dir_mut, TRASHCTL_INFO_DIR, TRASHCTL_PATH_MAX);
+
+    construct_path(env->trashenv.p_home_dir, usr->pw_dir, NULL, NULL, TRASHCTL_PATH_MAX);
+    construct_path(env->trashenv.p_trash_dir, usr->pw_dir, TRASHCTL_TRASH_DIR, NULL, TRASHCTL_PATH_MAX);
+    construct_path(env->trashenv.p_info_dir, usr->pw_dir, TRASHCTL_INFO_DIR, NULL, TRASHCTL_PATH_MAX);
 
     env->info_dir = env->info_dir_mut;
 
@@ -211,6 +215,8 @@ int initialize(int argc, char** argv)
 {
     int err;
     struct environment_info env;
+    struct trashctl_env trashenv = { 0 };
+    env.trashenv = trashenv;
 
     switch(argc){
         case TRASHCTL_ARG_CNT_ONE:

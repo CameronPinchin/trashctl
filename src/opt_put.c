@@ -15,9 +15,7 @@ static int put_create_info_entry(struct environment_info* env, const char* origi
     time_t now = time(NULL);
     struct tm *local = localtime(&now);
 
-    strlcpy(tmp, env->info_dir, TRASHCTL_PATH_MAX);
-    strlcat(tmp, file_name, TRASHCTL_PATH_MAX);
-    strlcat(tmp, ".trashinfo", TRASHCTL_PATH_MAX);
+    construct_path(tmp, env->info_dir, file_name, ".trashinfo", TRASHCTL_PATH_MAX);
 
     if((fd = open(file_name_with_suffix, O_WRONLY | O_CREAT | O_TRUNC, info_file_perms )) < 0){
         fprintf(stderr, "[ERROR] Failed to open file.\n");
@@ -50,29 +48,23 @@ static int put_create_info_entry(struct environment_info* env, const char* origi
  */
 static int put_file(struct environment_info* env, char* file_name)
 {
-    int err, tmp_length;
+    int err;
     errno = 0;
 
     char tmp_new_file_path[TRASHCTL_PATH_MAX] = { 0 };
-    const char* new_file_path = tmp_new_file_path;
-    strlcpy(tmp_new_file_path, env->trash_dir, TRASHCTL_PATH_MAX);
-    strlcat(tmp_new_file_path, file_name, TRASHCTL_PATH_MAX);
-
-    // I do not like this at all, but it works and we are sticking with it for now.
     char tmp[TRASHCTL_PATH_MAX] = {0};
     const char* original_file_path = tmp;
-    getcwd(tmp, sizeof(tmp));
-    tmp_length = strnlen(tmp, TRASHCTL_PATH_MAX);
-    tmp[tmp_length] = '/';
-    tmp_length = strnlen(tmp, TRASHCTL_PATH_MAX); // should be the path of file_name
-    strlcat(tmp, file_name, TRASHCTL_PATH_MAX);
+    const char* new_file_path = tmp_new_file_path;
 
+    getcwd(tmp, sizeof(tmp));
+
+    construct_path(tmp_new_file_path, env->trash_dir, file_name, NULL, TRASHCTL_PATH_MAX);
+    construct_path(tmp, NULL, "/", file_name, TRASHCTL_PATH_MAX);
     // move files
     if((err = rename(original_file_path, new_file_path) != 0)){
         fprintf(stderr, "[ERROR] Failed to rename file.\n");
         return 1;
     }
-
     // create .trashinfo entry
     if((err = put_create_info_entry(env, original_file_path, file_name)) == 1){
         fprintf(stderr, "[ERROR] Failed to create .trashinfo file entry.\n");
