@@ -1,14 +1,13 @@
 #include "../include/trashctl.h"
 /* This covers the case of moving files from your trash directory */
 
-
 /**
  * @brief Internal function called by trashctl_restore().
  *
- * Removes a file matching the file_name input from the users Trash directory into the current working directory.
+ * If a matching file_name is found within the Trash directory, it will be deleted along with the corresponding trashinfo metadata.
  *
  * @param[in] env A pointer to a environment_info struct.
- * @param[in] file_name A pointer to a user-inputted file_name used to create a shell command.
+ * @param[in] file_name A pointer to a user-inputted file_name.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
 static int restore_file(struct environment_info* env, char* file_name)
@@ -72,7 +71,7 @@ static int restore_file(struct environment_info* env, char* file_name)
  * Simply calls restore_file(env, file_name) and returns its output.
  *
  * @param[in] env A pointer to a environment_info struct.
- * @param[in] file_name A pointer to a user-inputted file_name to be passed to init_shell().
+ * @param[in] file_name A pointer to a user-inputted file_name.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
 int trashctl_restore(struct environment_info* env, char* file_name)

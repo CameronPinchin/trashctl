@@ -13,7 +13,7 @@
 #ifndef TRASHCTL_H
 #define TRASHCTL_H
 
-#define TRASHCTL_VER                0.2.3 /* MAJOR, MINOR (new stuff), PATCH (bugs,cleanup)*/
+#define TRASHCTL_VER                0.2.4 /* MAJOR, MINOR (new stuff), PATCH (bugs,cleanup)*/
 
 #define TRASHCTL_PATH_MAX           256
 #define TRASHCTL_BUF_MAX            512

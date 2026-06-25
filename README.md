@@ -66,7 +66,7 @@ Trashctl will use this directory if it exists, or create the directory if it doe
 
 The first run of trashctl will check if the users Trash directory exists. If it does not exist, the Trash directory will be created in the location defined above. 
 
-Trashctl leverages subshells to operate based on user input, and is insulated against fatal errors occurring in the subshell. 
+Trashctl leverages a combination of POSIX compliant system calls and library functions to operate. 
 
 Trashctl can operate on any singular file, but currently lacks the ability to operate on directories. This functionality is actively being worked on.
 

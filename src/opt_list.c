@@ -5,7 +5,7 @@
 /**
  * @brief Internal function called by trashctl_list().
  *
- * Performs string manipulation to create a valid shell command and passes it to init_shell().
+ * Opens the Trash directory and lists each entry found within it.
  *
  * @param[in] env A pointer to a environment_info struct.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.

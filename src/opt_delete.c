@@ -9,7 +9,7 @@
  * Removes a file matching the trash_dir/file_name path.
  *
  * @param[in] env A pointer to a environment_info struct.
- * @param[in] file_name A pointer to a user-inputted file_name used to create a shell command.
+ * @param[in] file_name A pointer to a user-inputted file_name.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
 static int delete_file(struct environment_info* env, char* file_name)
@@ -65,7 +65,7 @@ static int delete_file(struct environment_info* env, char* file_name)
  * Simply calls empty_all_files(env) and returns its output.
  *
  * @param[in] env A pointer to a environment_info struct.
- * @param[in] file_name A pointer to a user-inputted file_name to be passed to init_shell().
+ * @param[in] file_name A pointer to a user-inputted file_name.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
 int trashctl_delete(struct environment_info* env, char* file_name)

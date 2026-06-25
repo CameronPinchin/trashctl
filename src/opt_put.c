@@ -43,7 +43,7 @@ static int put_create_info_entry(struct environment_info* env, const char* origi
  * Moves the file matching file_name into the users trash directory.
  *
  * @param[in] env A pointer to a environment_info struct.
- * @param[in] file_name A pointer to a user-inputted file_name used to create a shell command.
+ * @param[in] file_name A pointer to a user-inputted file_name.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
 static int put_file(struct environment_info* env, char* file_name)
@@ -80,7 +80,7 @@ static int put_file(struct environment_info* env, char* file_name)
  * Simply calls put_file(env, file_name) and returns its output.
  *
  * @param[in] env A pointer to a environment_info struct.
- * @param[in] file_name A pointer to a user-inputted file_name to be passed to init_shell().
+ * @param[in] file_name A pointer to a user-inputted file_name.
  * @return If the operation is successful, 0 is returned. Otherwise, a 1 is returned on failure.
  */
 int trashctl_put(struct environment_info* env, char* file_name)

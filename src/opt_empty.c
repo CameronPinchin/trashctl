@@ -12,6 +12,7 @@
  */
 static int empty_all_files(struct environment_info* env)
 {
+    int err;
     errno = 0;
 
     DIR *dirp = opendir(env->trash_dir);
@@ -22,7 +23,7 @@ static int empty_all_files(struct environment_info* env)
         closedir(dirp);
         return 1;
     }
-    /* if a Trashed file is deleted, its corresponding info file must also be deleted. */
+
     while((dir_entry = readdir(dirp)) != NULL){
         if((strcmp(dir_entry->d_name, "..") == 0) || strcmp(dir_entry->d_name, ".") == 0){
             continue;
@@ -36,9 +37,15 @@ static int empty_all_files(struct environment_info* env)
         construct_path(tmp_trash, env->trash_dir, dir_entry->d_name, NULL,TRASHCTL_PATH_MAX);
         construct_path(tmp_info, env->info_dir, dir_entry->d_name, ".trashinfo", TRASHCTL_PATH_MAX);
 
+        if((err = unlink(trash_path)) != 0){
+            fprintf(stderr, "[ERROR] %s\n", strerror(errno));
+            return 1;
+        }
 
-        unlink(trash_path);
-        unlink(info_path);
+        if((err = unlink(info_path)) != 0){
+            fprintf(stderr, "[ERROR] %s\n", strerror(errno));
+            return 1;
+        }
     }
 
     closedir(dirp);
