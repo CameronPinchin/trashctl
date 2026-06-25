@@ -67,15 +67,15 @@ static int put_file(struct environment_info* env, char* file_name)
     tmp_length = strnlen(tmp, TRASHCTL_PATH_MAX); // should be the path of file_name
     strlcat(tmp, file_name, TRASHCTL_PATH_MAX);
 
-    // create .trashinfo entry
-    if((err = put_create_info_entry(env, original_file_path, file_name)) == 1){
-        fprintf(stderr, "[ERROR] Failed to create .trashinfo file entry.\n");
-        return 1;
-    }
-
     // move files
     if((err = rename(original_file_path, new_file_path) != 0)){
         fprintf(stderr, "[ERROR] Failed to rename file.\n");
+        return 1;
+    }
+
+    // create .trashinfo entry
+    if((err = put_create_info_entry(env, original_file_path, file_name)) == 1){
+        fprintf(stderr, "[ERROR] Failed to create .trashinfo file entry.\n");
         return 1;
     }
 

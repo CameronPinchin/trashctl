@@ -229,7 +229,7 @@ int initialize(int argc, char** argv)
             }
 
             if((err = init_check_for_trash_dir(&env)) == 1) {
-                mkdir_p(env.home_dir);
+                mkdir_p(env.trash_dir);
             }
 
             if((err = init_check_for_info_dir(&env)) == 1){
@@ -253,7 +253,7 @@ int initialize(int argc, char** argv)
             }
 
             if((err = init_check_for_trash_dir(&env)) == 1) {
-                mkdir_p(env.home_dir);
+                mkdir_p(env.trash_dir);
             }
 
             if((err = init_check_for_info_dir(&env)) == 1){

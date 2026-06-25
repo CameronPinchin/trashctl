@@ -67,7 +67,6 @@ static int restore_file(struct environment_info* env, char* file_name)
     }
 
     fclose(filep);
-    close(fd);
 
     return 0;
 }

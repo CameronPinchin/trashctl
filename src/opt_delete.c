@@ -14,6 +14,7 @@
  */
 static int delete_file(struct environment_info* env, char* file_name)
 {
+    int err;
     errno = 0;
 
     DIR* dirp = opendir(env->trash_dir);
@@ -43,8 +44,16 @@ static int delete_file(struct environment_info* env, char* file_name)
             const char* trash_path = tmp_trash;
             const char* info_path = tmp_info;
 
-            unlink(trash_path);
-            unlink(info_path);
+
+            if((err = unlink(trash_path)) != 0){
+                fprintf(stderr, "[ERROR] %s\n", strerror(errno));
+                return 1;
+            }
+
+            if((err = unlink(info_path)) != 0){
+                fprintf(stderr, "[ERROR] %s\n", strerror(errno));
+                return 1;
+            }
 
             break;
         }

@@ -13,10 +13,8 @@
 #ifndef TRASHCTL_H
 #define TRASHCTL_H
 
-#define TRASHCTL_VER                0.10
+#define TRASHCTL_VER                0.2.1 /* MAJOR, MINOR (new stuff), PATCH (bugs,cleanup)*/
 
-#define TRASHCTL_SUBSHELL_CMD_LEN   256
-#define TRASHCTL_SUBPATH_LEN        128
 #define TRASHCTL_PATH_MAX           256
 #define TRASHCTL_BUF_MAX            512
 #define TRASHCTL_LINE_MAX           1024
@@ -60,10 +58,19 @@ struct environment_info {
     const char* home_dir;                           /* Identifier for the home directory of the user      */
     const char* trash_dir;                          /* Identifier for the trash directory of the user     */
     const char* info_dir;
-    char trash_dir_mut[TRASHCTL_PATH_MAX];  /* For the concatenation of home_dir and trash_dir    */
-    char info_dir_mut[TRASHCTL_PATH_MAX];   /* For the concatenation of home_dir and trash_dir    */
+    char trash_dir_mut[TRASHCTL_PATH_MAX];          // this is awkward and should be either changed or removed
+    char info_dir_mut[TRASHCTL_PATH_MAX];
     size_t trash_dir_len;                           /* To store the length of the pathname for trash_dir  */
 };
+
+/* Consider:
+   struct trashctl_env {
+        char trash_dir[TRASHCTL_PATH_MAX];
+        char info_dir[TRASHCTL_PATH_MAX];
+        char home_dir[TRASHCTL_PATH_MAX];
+   }
+
+ */
 
 /* FORWARD DECLARATIONS */
 int initialize(int argc, char** argv);
