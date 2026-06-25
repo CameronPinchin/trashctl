@@ -9,8 +9,8 @@ static int put_create_info_entry(struct environment_info* env, const char* origi
     int fd, formatted_length;
 
     char tmp[TRASHCTL_PATH_MAX] = { 0 };
-    char formatted_data[TRASHCTL_BUF_MAX] = {0};
-    char timestamp_str[32];
+    char formatted_data[TRASHCTL_BUF_MAX] = { 0 };
+    char timestamp_str[32] = { 0 };
     const char* file_name_with_suffix = tmp;
     time_t now = time(NULL);
     struct tm *local = localtime(&now);
@@ -22,7 +22,7 @@ static int put_create_info_entry(struct environment_info* env, const char* origi
         return 1;
     }
 
-    strftime(timestamp_str, sizeof(timestamp_str), "%Y-%m-%dT%H:%M:%S", local); //2026-05-04T11:08:18
+    strftime(timestamp_str, sizeof(timestamp_str), "%Y-%m-%dT%H:%M:%S", local);
 
     formatted_length = snprintf(formatted_data, TRASHCTL_BUF_MAX,"[Trash Info]\nPath=%s\nDeletionDate=%s\n", original_file_path, timestamp_str);
 
